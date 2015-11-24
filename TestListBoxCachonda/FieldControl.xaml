@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="TestListBoxCachonda.FieldControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:b="clr-namespace:TestListBoxCachonda.Configuration"
+             xmlns:c="clr-namespace:TestListBoxCachonda"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance b:FieldViewModel}"
+             Grid.IsSharedSizeScope="True"             
+             d:DesignHeight="300" d:DesignWidth="300">
+    <!--<i:Interaction.Behaviors>
+        <b:LockBehavior IsLocked="{Binding IsDirty}" />
+    </i:Interaction.Behaviors>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <c:TupleLayout>
+                <c:TupleLayout.LeftSide>
+                    <TextBlock Text="Nombre" />
+                </c:TupleLayout.LeftSide>
+                <c:TupleLayout.RightSide>
+                    <TextBox
+                        Text="{Binding Name.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
+                    </TextBox>
+                </c:TupleLayout.RightSide>
+            </c:TupleLayout>
+            <c:TupleLayout>
+                <c:TupleLayout.LeftSide>
+                    <TextBlock Text="Descripción" />
+                </c:TupleLayout.LeftSide>
+                <c:TupleLayout.RightSide>
+                    <TextBox
+                        Text="{Binding Description.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
+                    </TextBox>
+                </c:TupleLayout.RightSide>
+            </c:TupleLayout>
+        </StackPanel>
+        <StackPanel Grid.Row="1" >
+            <UniformGrid Rows="1">
+                <Button Content="Cancel edit" Command="{Binding CancelEditCommand}" />
+                <Button Content="Save" Command="{Binding SaveCommand}" />
+            </UniformGrid>
+            <TextBlock Text="{Binding IsDirty}" />
+        </StackPanel>
+    </Grid>
+
+
+
+</UserControl>
