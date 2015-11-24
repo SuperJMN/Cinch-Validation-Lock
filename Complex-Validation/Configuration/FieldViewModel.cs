@@ -12,6 +12,7 @@ namespace TestListBoxCachonda.Configuration
 
     public class FieldViewModel : EditableValidatingViewModelBase
     {
+        private readonly string name;
         private static readonly PropertyChangedEventArgs NamePropertyChangeArgs = new PropertyChangedEventArgs("Name");
         private static readonly PropertyChangedEventArgs DescriptionPropertyChangeArgs = new PropertyChangedEventArgs("Description");
 
@@ -19,6 +20,7 @@ namespace TestListBoxCachonda.Configuration
 
         public FieldViewModel([NotNull] string name)
         {
+            this.name = name;
             if (name == null)
             {
                 throw new ArgumentNullException(nameof(name));
@@ -31,13 +33,45 @@ namespace TestListBoxCachonda.Configuration
                     BeginEdit();
                 });
 
+            SetupDataWrappers();
+            SetupFixedData();
+        }
+
+        private void SetupFixedData()
+        {
+            Angles = FixedData.Angles;
+            FieldTypes = FixedData.FieldTypes;
+        }
+
+        private void SetupDataWrappers()
+        {
             Name = new DataWrapper<string>(this, NamePropertyChangeArgs) { DataValue = name };
-            Name.AddRule(new SimpleRule("DataValue", "Pon algo, coño", o => string.IsNullOrEmpty(((DataWrapper<string>)o).DataValue)));
-            Name.PropertyChanged += OnPropertyChanged;
+            Name.AddRule(DataWrapperRules.NotNullOrEmtpyRule("Pon algo"));
 
             Description = new DataWrapper<string>(this, DescriptionPropertyChangeArgs) { DataValue = string.Empty };
-            Description.AddRule(new SimpleRule("DataValue", "Pon algo, coño", o => string.IsNullOrEmpty(((DataWrapper<string>)o).DataValue)));
-            Description.PropertyChanged += OnPropertyChanged;
+            Description.AddRule(DataWrapperRules.NotNullOrEmtpyRule("Pon algo"));
+
+            IsActive = new DataWrapper<bool>(this, new PropertyChangedEventArgs("IsActive"));
+            IsRequired = new DataWrapper<bool>(this, new PropertyChangedEventArgs("IsRequired"));
+
+            SelectedFieldType = new DataWrapper<FieldType>(this, new PropertyChangedEventArgs("SelectedFieldType"));
+            Mask = new DataWrapper<string>(this, new PropertyChangedEventArgs("Mask"));
+            Min = new DataWrapper<int?>(this, new PropertyChangedEventArgs("SelectedAngle"));
+            Max = new DataWrapper<int?>(this, new PropertyChangedEventArgs("SelectedAngle"));
+            FixedValue = new DataWrapper<string>(this, new PropertyChangedEventArgs("FixedValue"));
+
+            ValidChars = new DataWrapper<string>(this, new PropertyChangedEventArgs("ValidChars"));
+            SelectedAngle = new DataWrapper<int>(this, new PropertyChangedEventArgs("SelectedAngle")) { DataValue = 0 };
+
+            SubscribeToChangesInAllDataWrappers();
+        }
+
+        private void SubscribeToChangesInAllDataWrappers()
+        {
+            foreach (var dataWrapperBase in AllDataWrappers)
+            {
+                dataWrapperBase.PropertyChanged += OnPropertyChanged;
+            }
         }
 
         public IEnumerable<DataWrapperBase> AllDataWrappers
@@ -64,7 +98,7 @@ namespace TestListBoxCachonda.Configuration
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             NotifyPropertyChanged("IsDirty");
-            CancelEditCommand.RaiseCanExecuteChanged();            
+            CancelEditCommand.RaiseCanExecuteChanged();
         }
 
         private bool IsChangeIndicator(DataWrapperBase dw)
@@ -108,5 +142,26 @@ namespace TestListBoxCachonda.Configuration
         public RelayCommand CancelEditCommand { get; }
 
         public DataWrapper<string> Description { get; set; }
+
+        public DataWrapper<bool> IsActive { get; set; }
+
+        public DataWrapper<bool> IsRequired { get; set; }
+
+        public IEnumerable<FieldType> FieldTypes { get; set; }
+
+        public DataWrapper<FieldType> SelectedFieldType { get; set; }
+
+        public DataWrapper<string> Mask { get; set; }
+
+        public DataWrapper<int?> Min { get; set; }
+
+        public DataWrapper<int?> Max { get; set; }
+
+        public DataWrapper<string> FixedValue { get; set; }
+
+        public DataWrapper<string> ValidChars { get; set; }
+
+        public IEnumerable<int> Angles { get; set; }
+        public DataWrapper<int> SelectedAngle { get; set; }
     }
 }

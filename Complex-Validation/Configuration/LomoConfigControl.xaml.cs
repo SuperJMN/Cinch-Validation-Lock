@@ -7,9 +7,9 @@ namespace TestListBoxCachonda
     /// <summary>
     /// Interaction logic for FieldControl.xaml
     /// </summary>
-    public partial class FieldControl
+    public partial class LomoConfigControl
     {
-        public FieldControl()
+        public LomoConfigControl()
         {
             InitializeComponent();
         }

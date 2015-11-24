@@ -57,6 +57,14 @@ namespace TestListBoxCachonda.Configuration
             get { return addFieldCommand ?? (addFieldCommand = new RelayCommand(AddField)); }
         }
 
+        public object Description { get; }
+
+        public object ImagePath { get; }
+
+        public object BoxCount { get; }
+
+        public object Customer { get; }
+
         public object Clone()
         {
             return new LomoConfigViewModel(this);

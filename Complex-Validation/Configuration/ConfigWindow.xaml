@@ -18,15 +18,8 @@
         <DataTemplate DataType="{x:Type configuration:FieldViewModel}">
             <TextBlock Text="{Binding Name.DataValue}" />
         </DataTemplate>
+        <c:NullToFalseConverter x:Key="NullToFalseConverter" />
 
-        <Style x:Key="DisableOnNullStyle" TargetType="FrameworkElement">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding SelectedConfig}" Value="{x:Null}">
-                    <Setter Property="IsEnabled" Value="False" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -45,22 +38,15 @@
             </UniformGrid>
             <ListBox ItemsSource="{Binding Configs}" SelectedItem="{Binding SelectedConfig, Mode=TwoWay}" />
         </DockPanel>
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource DisableOnNullStyle}">
-            <Grid DataContext="{Binding SelectedConfig}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <DockPanel >
-                    <UniformGrid DockPanel.Dock="Bottom" Rows="1">
-                        <Button Content="Añadir" Command="{Binding AddFieldCommand}" />
-                    </UniformGrid>
-                    <ListBox
-                        ItemsSource="{Binding Fields}"
-                        SelectedItem="{Binding SelectedField, Mode=TwoWay}" />
-                </DockPanel>
-                <c:FieldControl Grid.Column="1" DataContext="{Binding SelectedField}" />
-            </Grid>
-        </Grid>
+        <c:LomoConfigControl Grid.Column="1" Grid.Row="0" DataContext="{Binding SelectedConfig}" IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}"  />
+        <configuration:FieldControl Grid.Row="1" Grid.Column="1" DataContext="{Binding SelectedConfig.SelectedField}" IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}" />
+        <DockPanel Grid.Row="1" Grid.Column="0" DataContext="{Binding SelectedConfig}" IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}">
+            <UniformGrid DockPanel.Dock="Bottom" Rows="1">
+                <Button Content="Añadir" Command="{Binding AddFieldCommand}" />
+            </UniformGrid>
+            <ListBox
+                ItemsSource="{Binding Fields}"
+                SelectedItem="{Binding SelectedField, Mode=TwoWay}" />
+        </DockPanel>
     </Grid>
 </Window>
