@@ -87,7 +87,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Configuration\Class1.cs" />
+    <Compile Include="Configuration\VisualTreeUtils.cs" />
     <Compile Include="Configuration\DataWrapperRules.cs" />
     <Compile Include="Configuration\DataWrapperValidationExpressions.cs" />
     <Compile Include="Configuration\FieldControl - Copy.xaml.cs">
@@ -101,8 +101,8 @@
     <Compile Include="Configuration\LomoConfigViewModel.cs" />
     <Compile Include="Configuration\LomoFieldsRepository.cs" />
     <Compile Include="Configuration\SampleData.cs" />
-    <Compile Include="NullToFalseConverter.cs" />
-    <Compile Include="TupleLayout.cs" />
+    <Compile Include="Configuration\NullToFalseConverter.cs" />
+    <Compile Include="Configuration\TupleLayout.cs" />
     <Page Include="Configuration\ConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -142,7 +142,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NegateBoolConverter.cs" />
+    <Compile Include="Configuration\NegateBoolConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
