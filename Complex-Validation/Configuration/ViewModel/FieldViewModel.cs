@@ -3,17 +3,12 @@ namespace ComplexValidation.Configuration.ViewModel
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Input;
     using CinchExtended.BusinessObjects;
-    using CinchExtended.ViewModels;
-    using GalaSoft.MvvmLight.Command;
     using Model;
     using Properties;
     using Supporters;
 
-    public class FieldViewModel : EditableValidatingViewModelBase
+    public class FieldViewModel : FullyFledgedViewModel
     {
         private readonly string name;
         private static readonly PropertyChangedEventArgs NamePropertyChangeArgs = new PropertyChangedEventArgs("Name");
@@ -22,8 +17,6 @@ namespace ComplexValidation.Configuration.ViewModel
         private const string Required = "Requerido";
         private const string InvalidRange = "Rango no válido";
 
-        private RelayCommand saveCommand;
-        private ICommand scapeAttemptCommand;
 
         public FieldViewModel([NotNull] string name)
         {
@@ -33,12 +26,7 @@ namespace ComplexValidation.Configuration.ViewModel
                 throw new ArgumentNullException(name);
             }
 
-            CancelEditCommand = new RelayCommand(
-                () =>
-                {
-                    CancelEdit();
-                    BeginEdit();
-                });
+            DisplayName = "el Campo";
 
             SetupDataWrappers();
             SetupFixedData();
@@ -61,6 +49,9 @@ namespace ComplexValidation.Configuration.ViewModel
             IsRequired = new DataWrapper<bool>(this, new PropertyChangedEventArgs("IsRequired"));
 
             SelectedFieldType = new DataWrapper<FieldType>(this, new PropertyChangedEventArgs("SelectedFieldType"));
+            SelectedFieldType.PropertyChanged += (sender, args) => ResetMinAndMax();
+
+
             Mask = new DataWrapper<string>(this, new PropertyChangedEventArgs("Mask"));
             Min = new DataWrapper<int?>(this, new PropertyChangedEventArgs("Min"));
             Max = new DataWrapper<int?>(this, new PropertyChangedEventArgs("Max"));
@@ -80,92 +71,19 @@ namespace ComplexValidation.Configuration.ViewModel
             SubscribeToChangesInAllDataWrappers();
         }
 
+        private void ResetMinAndMax()
+        {
+            Min.DataValue = null;
+            Max.DataValue = null;
+        }
+
         private void UpdateMinMaxState(object sender, PropertyChangedEventArgs e)
         {
             NotifyPropertyChanged("Max");
             NotifyPropertyChanged("Min");
         }
 
-        private void SubscribeToChangesInAllDataWrappers()
-        {
-            foreach (var dataWrapperBase in AllDataWrappers)
-            {
-                dataWrapperBase.PropertyChanged += OnPropertyChanged;
-            }
-        }
-
-        public IEnumerable<DataWrapperBase> AllDataWrappers
-        {
-            get { return DataWrapperHelper.GetWrapperProperties(this); }
-        }
-
-        public IEnumerable<IChangeIndicator> EditableDataWrappers
-        {
-            get { return AllDataWrappers.Where(IsChangeIndicator).Cast<IChangeIndicator>(); }
-        }
-
-        public bool IsDirty
-        {
-            get
-            {
-                var isDirty = EditableDataWrappers.Any(dw => dw.IsDirty);
-                return isDirty;
-            }
-        }
-
         public DataWrapper<string> Name { get; set; }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            NotifyPropertyChanged("IsDirty");
-            CancelEditCommand.RaiseCanExecuteChanged();
-            SaveCommand.RaiseCanExecuteChanged();
-        }
-
-        private static bool IsChangeIndicator(DataWrapperBase dw)
-        {
-            var type = typeof(IChangeIndicator);
-            return type.IsInstanceOfType(dw);
-        }
-
-        protected override void OnBeginEdit()
-        {
-            base.OnBeginEdit();
-            DataWrapperHelper.SetBeginEdit(AllDataWrappers);
-        }
-
-        protected override void OnEndEdit()
-        {
-            base.OnEndEdit();
-            DataWrapperHelper.SetEndEdit(AllDataWrappers);
-        }
-
-        protected override void OnCancelEdit()
-        {
-            base.OnCancelEdit();
-            DataWrapperHelper.SetCancelEdit(AllDataWrappers);
-        }
-
-        public RelayCommand SaveCommand
-        {
-            get
-            {
-                return saveCommand ?? (saveCommand = new RelayCommand(
-                    () =>
-                    {
-                        EndEdit();
-                        BeginEdit();
-                        NotifyPropertyChanged("IsDirty");
-                    }, () => IsValid));
-            }
-        }
-
-        public override bool IsValid
-        {
-            get { return AllDataWrappers.All(dw => dw.IsValid); }
-        }
-
-        public RelayCommand CancelEditCommand { get; set; }
 
         public DataWrapper<string> Description { get; set; }
 
@@ -188,16 +106,7 @@ namespace ComplexValidation.Configuration.ViewModel
         public DataWrapper<string> ValidChars { get; set; }
 
         public IEnumerable<int> Angles { get; set; }
+
         public DataWrapper<int> SelectedAngle { get; set; }
-
-        public ICommand ScapeAttemptCommand
-        {
-            get { return scapeAttemptCommand ?? (scapeAttemptCommand = new RelayCommand(OnScapeAttempt)) ; }
-        }
-
-        private static void OnScapeAttempt()
-        {
-            MessageBox.Show("No te me escapes, cabrón, que hay cambios sin guardar");
-        }
     }
 }

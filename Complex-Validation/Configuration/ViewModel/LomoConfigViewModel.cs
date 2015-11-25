@@ -15,15 +15,12 @@ namespace ComplexValidation.Configuration.ViewModel
     using Model;
     using Supporters;
 
-    public class LomoConfigViewModel : EditableValidatingViewModelBase, ICloneable
+    public class LomoConfigViewModel : FullyFledgedViewModel, ICloneable
     {
         private readonly string name;
         private readonly IOpenFileService openFileService;
-        private static readonly PropertyChangedEventArgs NameChangedArgs = new PropertyChangedEventArgs("Name");
         private RelayCommand addFieldCommand;
         private FieldViewModel selectedField;
-        private RelayCommand saveEditCommand;
-        private ICommand scapeAttemptCommand;
         private ICommand chooseImageCommand;
 
         private const string Required = "Requerido";
@@ -31,7 +28,7 @@ namespace ComplexValidation.Configuration.ViewModel
 
         private LomoConfigViewModel(LomoConfigViewModel lomoConfigViewModel)
         {
-            Name = new DataWrapper<string>(this, NameChangedArgs);
+            Name = new DataWrapper<string>(this, new PropertyChangedEventArgs("Name"));
             Name.DataValue = string.Copy(lomoConfigViewModel.Name.DataValue);
             Fields = CloneFields(lomoConfigViewModel.Fields);
         }
@@ -42,13 +39,8 @@ namespace ComplexValidation.Configuration.ViewModel
             this.openFileService = openFileService;
 
             Fields = new ObservableCollection<FieldViewModel>();
-            CancelEditCommand = new RelayCommand(
-               () =>
-               {
-                   CancelEdit();
-                   BeginEdit();
-               });
-
+            DisplayName = "la Configuración de Lomo";
+            
             SetupDataWrappers();
             SetupFixedData();
         }
@@ -73,39 +65,6 @@ namespace ComplexValidation.Configuration.ViewModel
             SelectedCustomer = new DataWrapper<CustomerViewModel>(this, new PropertyChangedEventArgs("SelectedCustomer"));
 
             SubscribeToChangesInAllDataWrappers();
-        }
-
-        private void SubscribeToChangesInAllDataWrappers()
-        {
-            foreach (var dataWrapperBase in AllDataWrappers)
-            {
-                dataWrapperBase.PropertyChanged += OnPropertyChanged;
-            }
-        }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            NotifyPropertyChanged("IsDirty");
-            CancelEditCommand.RaiseCanExecuteChanged();
-            SaveCommand.RaiseCanExecuteChanged();
-        }
-
-        public RelayCommand CancelEditCommand { get; set; }
-
-        public IEnumerable<DataWrapperBase> AllDataWrappers
-        {
-            get { return DataWrapperHelper.GetWrapperProperties(this); }
-        }
-
-        public IEnumerable<IChangeIndicator> EditableDataWrappers
-        {
-            get { return AllDataWrappers.Where(IsChangeIndicator).Cast<IChangeIndicator>(); }
-        }
-
-        private static bool IsChangeIndicator(DataWrapperBase dw)
-        {
-            var type = typeof(IChangeIndicator);
-            return type.IsInstanceOfType(dw);
         }
 
         public DataWrapper<string> Name { get; set; }
@@ -160,59 +119,8 @@ namespace ComplexValidation.Configuration.ViewModel
         {
             Fields.Add(new FieldViewModel("Field"));
         }
-
-        protected override void OnBeginEdit()
-        {
-            base.OnBeginEdit();
-            DataWrapperHelper.SetBeginEdit(AllDataWrappers);
-        }
-
-        protected override void OnEndEdit()
-        {
-            base.OnEndEdit();
-            DataWrapperHelper.SetEndEdit(AllDataWrappers);
-        }
-
-        protected override void OnCancelEdit()
-        {
-            base.OnCancelEdit();
-            DataWrapperHelper.SetCancelEdit(AllDataWrappers);
-        }
-
-        public RelayCommand SaveCommand
-        {
-            get
-            {
-                return saveEditCommand ?? (saveEditCommand = new RelayCommand(
-                    () =>
-                    {
-                        EndEdit();
-                        BeginEdit();
-                        NotifyPropertyChanged("IsDirty");
-                    }, () => IsValid));
-            }
-        }
-
-        public override bool IsValid
-        {
-            get { return AllDataWrappers.All(dw => dw.IsValid); }
-        }
-
-        public bool IsDirty
-        {
-            get
-            {
-                var isDirty = EditableDataWrappers.Any(dw => dw.IsDirty);
-                return isDirty;
-            }
-        }
-
+        
         public IEnumerable<CustomerViewModel> Customers { get; set; }
-
-        public ICommand ScapeAttemptCommand
-        {
-            get { return scapeAttemptCommand ?? (scapeAttemptCommand = new RelayCommand(OnScapeAttempt)); }
-        }
 
         public ICommand ChooseImageCommand
         {
@@ -226,11 +134,6 @@ namespace ComplexValidation.Configuration.ViewModel
             {
                 ImagePath.DataValue = openFileService.FileName;
             }
-        }
-
-        private static void OnScapeAttempt()
-        {
-            MessageBox.Show("No te me escapes, cabrón, que hay cambios sin guardar");
-        }
+        }        
     }
 }

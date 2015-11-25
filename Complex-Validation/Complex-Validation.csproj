@@ -92,6 +92,7 @@
     <Compile Include="Configuration\Model\Customer.cs" />
     <Compile Include="Configuration\ViewModel\CustomerViewModel.cs" />
     <Compile Include="Configuration\Model\FieldType.cs" />
+    <Compile Include="Configuration\ViewModel\FullyFledgedViewModel.cs" />
     <Compile Include="Configuration\View\Supporters\Children.cs" />
     <Compile Include="Configuration\View\Supporters\VisualTreeUtils.cs" />
     <Compile Include="Configuration\ViewModel\Supporters\DataWrapperRules.cs" />

@@ -97,7 +97,7 @@
                 </UniformGrid.Resources>
                 <Button Content="Cancelar" Command="{Binding CancelEditCommand}"
                         Style="{StaticResource GreenButtonStyle}" />
-                <Button Content="Guardar cambios" Command="{Binding SaveCommand}"
+                <Button Content="Guardar" Command="{Binding SaveCommand}"
                         Style="{StaticResource PinkButtonStyle}" />
             </UniformGrid>
         </StackPanel>
