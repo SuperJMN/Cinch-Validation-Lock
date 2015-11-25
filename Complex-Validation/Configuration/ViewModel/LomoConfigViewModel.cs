@@ -8,19 +8,23 @@ namespace ComplexValidation.Configuration.ViewModel
     using System.Windows;
     using System.Windows.Input;
     using CinchExtended.BusinessObjects;
+    using CinchExtended.Services.Interfaces;
     using CinchExtended.ViewModels;
     using GalaSoft.MvvmLight.Command;
+    using Microsoft.Win32;
     using Model;
     using Supporters;
 
     public class LomoConfigViewModel : EditableValidatingViewModelBase, ICloneable
     {
         private readonly string name;
+        private readonly IOpenFileService openFileService;
         private static readonly PropertyChangedEventArgs NameChangedArgs = new PropertyChangedEventArgs("Name");
         private RelayCommand addFieldCommand;
         private FieldViewModel selectedField;
         private RelayCommand saveEditCommand;
         private ICommand scapeAttemptCommand;
+        private ICommand chooseImageCommand;
 
         private const string Required = "Requerido";
         private const string InvalidBoxCount = "Número de cajas no válido";
@@ -32,9 +36,10 @@ namespace ComplexValidation.Configuration.ViewModel
             Fields = CloneFields(lomoConfigViewModel.Fields);
         }
 
-        public LomoConfigViewModel(string name)
+        public LomoConfigViewModel(string name, IOpenFileService openFileService)
         {
             this.name = name;
+            this.openFileService = openFileService;
 
             Fields = new ObservableCollection<FieldViewModel>();
             CancelEditCommand = new RelayCommand(
@@ -50,7 +55,7 @@ namespace ComplexValidation.Configuration.ViewModel
 
         private void SetupFixedData()
         {
-            Customers = FixedData.Customers.Select(customer => new CustomerViewModel { Id = customer.Id, Name = customer.Name});
+            Customers = FixedData.Customers.Select(customer => new CustomerViewModel { Id = customer.Id, Name = customer.Name });
         }
 
         private void SetupDataWrappers()
@@ -59,9 +64,10 @@ namespace ComplexValidation.Configuration.ViewModel
             Name.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
             Description = new DataWrapper<string>(this, new PropertyChangedEventArgs("Description")) { DataValue = "Descripción" };
-            Description.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
             ImagePath = new DataWrapper<string>(this, new PropertyChangedEventArgs("ImagePath"));
+            ImagePath.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
+
             BoxCount = new DataWrapper<int>(this, new PropertyChangedEventArgs("BoxCount")) { DataValue = 1 };
             BoxCount.AddRule(DataWrapperRules.NumberBetween(1, 100, InvalidBoxCount));
             SelectedCustomer = new DataWrapper<CustomerViewModel>(this, new PropertyChangedEventArgs("SelectedCustomer"));
@@ -81,6 +87,7 @@ namespace ComplexValidation.Configuration.ViewModel
         {
             NotifyPropertyChanged("IsDirty");
             CancelEditCommand.RaiseCanExecuteChanged();
+            SaveCommand.RaiseCanExecuteChanged();
         }
 
         public RelayCommand CancelEditCommand { get; set; }
@@ -182,8 +189,13 @@ namespace ComplexValidation.Configuration.ViewModel
                         EndEdit();
                         BeginEdit();
                         NotifyPropertyChanged("IsDirty");
-                    }));
+                    }, () => IsValid));
             }
+        }
+
+        public override bool IsValid
+        {
+            get { return AllDataWrappers.All(dw => dw.IsValid); }
         }
 
         public bool IsDirty
@@ -200,6 +212,20 @@ namespace ComplexValidation.Configuration.ViewModel
         public ICommand ScapeAttemptCommand
         {
             get { return scapeAttemptCommand ?? (scapeAttemptCommand = new RelayCommand(OnScapeAttempt)); }
+        }
+
+        public ICommand ChooseImageCommand
+        {
+            get { return chooseImageCommand ?? (chooseImageCommand = new RelayCommand(ChooseImage)); }
+        }
+
+        private void ChooseImage()
+        {
+            var dialogResult = openFileService.ShowDialog(null);
+            if (dialogResult.HasValue && dialogResult.Value)
+            {
+                ImagePath.DataValue = openFileService.FileName;
+            }
         }
 
         private static void OnScapeAttempt()

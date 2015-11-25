@@ -1,6 +1,7 @@
 ﻿namespace ComplexValidation
 {
     using System.Windows;
+    using CinchExtended.Services.Implementation;
     using Configuration.ViewModel;
     using ConfigWindow = Configuration.View.ConfigWindow;
 
@@ -13,7 +14,7 @@
         {
             base.OnStartup(e);
 
-            var p = new ConfigWindowViewModel(null);
+            var p = new ConfigWindowViewModel(null, new WpfOpenFileService());
             var configWindow = new ConfigWindow();
             configWindow.DataContext = p;
             configWindow.Show();            

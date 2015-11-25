@@ -22,7 +22,7 @@ namespace ComplexValidation.Configuration.ViewModel
         private const string Required = "Requerido";
         private const string InvalidRange = "Rango no válido";
 
-        private RelayCommand saveEditCommand;
+        private RelayCommand saveCommand;
         private ICommand scapeAttemptCommand;
 
         public FieldViewModel([NotNull] string name)
@@ -56,7 +56,6 @@ namespace ComplexValidation.Configuration.ViewModel
             Name.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
             Description = new DataWrapper<string>(this, DescriptionPropertyChangeArgs) { DataValue = string.Empty };
-            Description.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
             IsActive = new DataWrapper<bool>(this, new PropertyChangedEventArgs("IsActive"));
             IsRequired = new DataWrapper<bool>(this, new PropertyChangedEventArgs("IsRequired"));
@@ -120,6 +119,7 @@ namespace ComplexValidation.Configuration.ViewModel
         {
             NotifyPropertyChanged("IsDirty");
             CancelEditCommand.RaiseCanExecuteChanged();
+            SaveCommand.RaiseCanExecuteChanged();
         }
 
         private static bool IsChangeIndicator(DataWrapperBase dw)
@@ -150,14 +150,19 @@ namespace ComplexValidation.Configuration.ViewModel
         {
             get
             {
-                return saveEditCommand ?? (saveEditCommand = new RelayCommand(
+                return saveCommand ?? (saveCommand = new RelayCommand(
                     () =>
                     {
                         EndEdit();
                         BeginEdit();
                         NotifyPropertyChanged("IsDirty");
-                    }));
+                    }, () => IsValid));
             }
+        }
+
+        public override bool IsValid
+        {
+            get { return AllDataWrappers.All(dw => dw.IsValid); }
         }
 
         public RelayCommand CancelEditCommand { get; set; }

@@ -14,7 +14,7 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="\Themes\Styles.xaml" />
+                <ResourceDictionary Source="/ComplexValidation;component/Themes/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type viewModel:LomoConfigViewModel}">

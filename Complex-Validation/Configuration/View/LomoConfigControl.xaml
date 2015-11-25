@@ -64,7 +64,7 @@
                     </s:TupleLayout.LeftSide>
                     <s:TupleLayout.RightSide>
                         <DockPanel>
-                            <Button Content="..." Width="32" Margin="8,0,0,0" DockPanel.Dock="Right" />
+                            <Button Content="..." Width="32" Margin="8,0,0,0" DockPanel.Dock="Right" Command="{Binding ChooseImageCommand}" />
                             <TextBox
                                 Text="{Binding ImagePath.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                         </DockPanel>

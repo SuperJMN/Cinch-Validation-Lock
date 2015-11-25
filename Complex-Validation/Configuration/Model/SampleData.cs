@@ -2,24 +2,32 @@ namespace ComplexValidation.Configuration.Model
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using CinchExtended.Services.Interfaces;
     using ViewModel;
 
-    public static class SampleData
+    public class SampleData
     {
-        public static IEnumerable<LomoConfigViewModel> Configs
+        private readonly IOpenFileService fileOpenFileService;
+
+        public SampleData(IOpenFileService fileOpenFileService)
+        {
+            this.fileOpenFileService = fileOpenFileService;
+        }
+
+        public IEnumerable<LomoConfigViewModel> Configs
         {
             get
             {
                 return new[]
                 {
-                    new LomoConfigViewModel("Config1") {Id = 1, Fields = GetSampleFields()},
-                    new LomoConfigViewModel("Config2") {Id = 2},
-                    new LomoConfigViewModel("Config3") {Id = 3}
+                    new LomoConfigViewModel("Config1", fileOpenFileService) {Id = 1, Fields = GetSampleFields()},
+                    new LomoConfigViewModel("Config2", fileOpenFileService) {Id = 2},
+                    new LomoConfigViewModel("Config3", fileOpenFileService) {Id = 3}
                 };
             }
         }
 
-        public static ObservableCollection<FieldViewModel> GetSampleFields()
+        public ObservableCollection<FieldViewModel> GetSampleFields()
         {
             return new ObservableCollection<FieldViewModel>
             {

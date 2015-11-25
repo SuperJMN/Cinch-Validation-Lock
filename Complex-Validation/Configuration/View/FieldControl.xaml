@@ -6,6 +6,8 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:supporters="clr-namespace:ComplexValidation.Configuration.View.Supporters"
              xmlns:viewModel="clr-namespace:ComplexValidation.Configuration.ViewModel"
+             xmlns:m="ComplexValidation.Configuration.Model"
+             xmlns:model="clr-namespace:ComplexValidation.Configuration.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:FieldViewModel}"
              Grid.IsSharedSizeScope="True"
@@ -57,8 +59,43 @@
                     <TextBlock Text="Tipo de campo" />
                 </supporters:TupleLayout.LeftSide>
                 <supporters:TupleLayout.RightSide>
-                    <ComboBox ItemsSource="{Binding FieldTypes}"
-                              SelectedValue="{Binding SelectedFieldType.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox ItemsSource="{Binding FieldTypes}"
+                                  SelectedValue="{Binding SelectedFieldType.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                        <UniformGrid Rows="1" Grid.Column="1" Margin="5,0,0,0">
+                            <UniformGrid.Style>
+                                <Style TargetType="FrameworkElement">
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedFieldType.DataValue}">
+                                            <DataTrigger.Value>
+                                                <model:FieldType>Numeric</model:FieldType>
+                                            </DataTrigger.Value>
+                                            <DataTrigger.Setters>
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger.Setters>
+                                        </DataTrigger>
+                                        
+                                    </Style.Triggers>
+                                </Style>
+                            </UniformGrid.Style>
+                            <DockPanel>
+                                <TextBlock Text="Mín." VerticalAlignment="Center" />
+                                <TextBox Margin="8,0,0,0"
+                                         MinWidth="50"
+                                         Text="{Binding Min.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, TargetNullValue=''}" />
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="Máx." VerticalAlignment="Center" />
+                                <TextBox Margin="8,0,0,0" MinWidth="50"
+                                         Text="{Binding Max.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, TargetNullValue=''}" />
+                            </DockPanel>
+                        </UniformGrid>
+                    </Grid>
                 </supporters:TupleLayout.RightSide>
             </supporters:TupleLayout>
             <supporters:TupleLayout>
@@ -73,19 +110,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBox
                             Text="{Binding Mask.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-                        <UniformGrid Rows="1" Grid.Column="1" Margin="5,0,0,0">
-                            <DockPanel>
-                                <TextBlock Text="Mín." VerticalAlignment="Center" />
-                                <TextBox Margin="8,0,0,0"
-                                         MinWidth="50"
-                                         Text="{Binding Min.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, TargetNullValue=''}" />
-                            </DockPanel>
-                            <DockPanel>
-                                <TextBlock Text="Máx." VerticalAlignment="Center" />
-                                <TextBox Margin="8,0,0,0" MinWidth="50"
-                                         Text="{Binding Max.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, TargetNullValue=''}" />
-                            </DockPanel>
-                        </UniformGrid>
+
                     </Grid>
                 </supporters:TupleLayout.RightSide>
             </supporters:TupleLayout>

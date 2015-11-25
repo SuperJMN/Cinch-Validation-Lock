@@ -1,20 +1,24 @@
 ﻿namespace ComplexValidation.Configuration.ViewModel
 {
     using System.Collections.ObjectModel;
+    using CinchExtended.Services.Interfaces;
     using GalaSoft.MvvmLight.Command;
     using Model;
 
     public class ConfigWindowViewModel : CinchExtended.ViewModels.EditableValidatingViewModelBase
     {
         private readonly ILomoConfigRepository lomoConfigRepository;
+        private readonly IOpenFileService openFileService;
         private RelayCommand duplicateCommand;
         private LomoConfigViewModel selectedConfig;
         private RelayCommand deleteCommand;
 
-        public ConfigWindowViewModel(ILomoConfigRepository lomoConfigRepository)
+        public ConfigWindowViewModel(ILomoConfigRepository lomoConfigRepository, IOpenFileService openFileService)
         {
             this.lomoConfigRepository = lomoConfigRepository;
-            Configs = new ObservableCollection<LomoConfigViewModel>(SampleData.Configs);
+            this.openFileService = openFileService;
+            var sampleData = new SampleData(openFileService);
+            Configs = new ObservableCollection<LomoConfigViewModel>(sampleData.Configs);
         }
 
         public ObservableCollection<LomoConfigViewModel> Configs { get; set; }
@@ -64,7 +68,7 @@
       
         private void Add()
         {
-            Configs.Add(new LomoConfigViewModel("Config"));
+            Configs.Add(new LomoConfigViewModel("Config", openFileService));
         }
 
         private void Delete()
