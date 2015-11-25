@@ -16,14 +16,14 @@ namespace TestListBoxCachonda.Configuration
         private static readonly PropertyChangedEventArgs NamePropertyChangeArgs = new PropertyChangedEventArgs("Name");
         private static readonly PropertyChangedEventArgs DescriptionPropertyChangeArgs = new PropertyChangedEventArgs("Description");
 
-        private RelayCommand cancelEditCommand;
+        private RelayCommand saveEditCommand;
 
         public FieldViewModel([NotNull] string name)
         {
             this.name = name;
             if (name == null)
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentNullException(name);
             }
 
             CancelEditCommand = new RelayCommand(
@@ -101,7 +101,7 @@ namespace TestListBoxCachonda.Configuration
             CancelEditCommand.RaiseCanExecuteChanged();
         }
 
-        private bool IsChangeIndicator(DataWrapperBase dw)
+        private static bool IsChangeIndicator(DataWrapperBase dw)
         {
             var type = typeof(IChangeIndicator);
             return type.IsInstanceOfType(dw);
@@ -129,7 +129,7 @@ namespace TestListBoxCachonda.Configuration
         {
             get
             {
-                return cancelEditCommand ?? (cancelEditCommand = new RelayCommand(
+                return saveEditCommand ?? (saveEditCommand = new RelayCommand(
                     () =>
                     {
                         EndEdit();
@@ -139,7 +139,7 @@ namespace TestListBoxCachonda.Configuration
             }
         }
 
-        public RelayCommand CancelEditCommand { get; }
+        public RelayCommand CancelEditCommand { get; set; }
 
         public DataWrapper<string> Description { get; set; }
 

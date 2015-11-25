@@ -19,7 +19,7 @@ namespace TestListBoxCachonda
         {
             base.OnStartup(e);
 
-            var p = new ConfigWindowViewModel(null, null);
+            var p = new ConfigWindowViewModel(null);
             var configWindow = new Configuration.ConfigWindow();
             configWindow.DataContext = p;
             configWindow.Show();            

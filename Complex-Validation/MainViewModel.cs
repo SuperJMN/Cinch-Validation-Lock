@@ -1,15 +1,12 @@
 ﻿namespace TestListBoxCachonda
 {
-    using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Runtime.CompilerServices;
     using System.Windows;
     using System.Windows.Input;
-    using Annotations;
+    using CinchExtended.ViewModels;
     using GalaSoft.MvvmLight.CommandWpf;
 
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : ViewModelBase
     {
         private bool canSelectItem;
 
@@ -36,7 +33,7 @@
                     return;
                 }
                 canSelectItem = value;
-                OnPropertyChanged();
+                NotifyPropertyChanged("CanSelectItem");
             }
         }
 
@@ -44,13 +41,6 @@
 
         public string SelectedItem { get; set; }
 
-        public ICommand PromptCommand { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public ICommand PromptCommand { get; set; }        
     }
 }

@@ -43,7 +43,7 @@
                 </c:TupleLayout.LeftSide>
                 <c:TupleLayout.RightSide>
                     <TextBox
-                        Text="{Binding Customer.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        Text="{Binding SelectedCustomer.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 </c:TupleLayout.RightSide>
             </c:TupleLayout>
             <c:TupleLayout>

@@ -5,12 +5,14 @@
 
     public class ConfigWindowViewModel : CinchExtended.ViewModels.EditableValidatingViewModelBase
     {
+        private readonly ILomoConfigRepository lomoConfigRepository;
         private RelayCommand duplicateCommand;
         private LomoConfigViewModel selectedConfig;
         private RelayCommand deleteCommand;
 
-        public ConfigWindowViewModel(ILomoConfigRepository lomoConfigRepository, ILomoFieldsRepository lomoFieldsRepository)
+        public ConfigWindowViewModel(ILomoConfigRepository lomoConfigRepository)
         {
+            this.lomoConfigRepository = lomoConfigRepository;
             Configs = new ObservableCollection<LomoConfigViewModel>(SampleData.Configs);
         }
 
@@ -21,7 +23,18 @@
             get { return selectedConfig; }
             set
             {
+                if (selectedConfig != null)
+                {
+                    selectedConfig.EndEdit();
+                }
+
                 selectedConfig = value;
+
+                if (selectedConfig != null)
+                {
+                    selectedConfig.BeginEdit();
+                }
+
                 NotifyPropertyChanged("SelectedConfig");
                 UpdateCommandsCanExecuteState();
             }

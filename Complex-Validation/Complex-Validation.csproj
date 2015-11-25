@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -87,19 +88,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration\CustomerViewModel.cs" />
     <Compile Include="Configuration\VisualTreeUtils.cs" />
     <Compile Include="Configuration\DataWrapperRules.cs" />
     <Compile Include="Configuration\DataWrapperValidationExpressions.cs" />
-    <Compile Include="Configuration\FieldControl - Copy.xaml.cs">
-      <DependentUpon>FieldControl - Copy.xaml</DependentUpon>
+    <Compile Include="Configuration\FieldControl.xaml.cs">
+      <DependentUpon>FieldControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration\FieldViewModel.cs" />
     <Compile Include="Configuration\FixedData.cs" />
     <Compile Include="Configuration\ILomoConfigRepository.cs" />
-    <Compile Include="Configuration\ILomoFieldsRepository.cs" />
     <Compile Include="Configuration\LockBehavior.cs" />
     <Compile Include="Configuration\LomoConfigViewModel.cs" />
-    <Compile Include="Configuration\LomoFieldsRepository.cs" />
     <Compile Include="Configuration\SampleData.cs" />
     <Compile Include="Configuration\NullToFalseConverter.cs" />
     <Compile Include="Configuration\TupleLayout.cs" />
@@ -107,7 +107,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Configuration\FieldControl - Copy.xaml">
+    <Page Include="Configuration\FieldControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -130,6 +130,7 @@
     <Compile Include="Configuration\LomoConfigControl.xaml.cs">
       <DependentUpon>LomoConfigControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\EmptyToNullConverter.cs" />
     <Compile Include="ListBoxEx.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
