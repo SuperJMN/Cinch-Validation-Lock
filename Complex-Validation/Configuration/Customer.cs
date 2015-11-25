@@ -1,6 +1,6 @@
-namespace TestListBoxCachonda.Configuration
+﻿namespace TestListBoxCachonda.Configuration
 {
-    public class CustomerViewModel
+    public class Customer
     {
         public string Name { get; set; }
         public int Id { get; set; }

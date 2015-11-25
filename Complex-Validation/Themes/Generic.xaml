@@ -17,7 +17,7 @@
                                 <ColumnDefinition SharedSizeGroup="Shared" Width="Auto" />
                                 <ColumnDefinition  />
                             </Grid.ColumnDefinitions>
-                            <ContentControl Focusable="False" Margin="4" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LeftSide}" />
+                            <ContentControl VerticalAlignment="Center" Focusable="False" Margin="4" Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LeftSide}" />
                             <ContentControl Focusable="False" Margin="4" Grid.Column="1" HorizontalAlignment="Stretch"
                                             Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=RightSide}" />
                         </Grid>

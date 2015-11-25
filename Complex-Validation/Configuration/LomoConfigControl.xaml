@@ -13,70 +13,89 @@
     <i:Interaction.Behaviors>
         <b:LockBehavior IsLocked="{Binding IsDirty}" />
     </i:Interaction.Behaviors>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Themes\Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type b:CustomerViewModel}">
+                <TextBlock Text="{Binding Name}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel>
-            <c:TupleLayout>
-                <c:TupleLayout.LeftSide>
-                    <TextBlock Text="Nombre" />
-                </c:TupleLayout.LeftSide>
-                <c:TupleLayout.RightSide>
-                    <TextBox
-                        Text="{Binding Name.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-                </c:TupleLayout.RightSide>
-            </c:TupleLayout>
-            <c:TupleLayout>
-                <c:TupleLayout.LeftSide>
-                    <TextBlock Text="Descripción" />
-                </c:TupleLayout.LeftSide>
-                <c:TupleLayout.RightSide>
-                    <TextBox
-                        Text="{Binding Description.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-                </c:TupleLayout.RightSide>
-            </c:TupleLayout>
-            <c:TupleLayout>
-                <c:TupleLayout.LeftSide>
-                    <TextBlock Text="Cliente" />
-                </c:TupleLayout.LeftSide>
-                <c:TupleLayout.RightSide>
-                    <TextBox
-                        Text="{Binding SelectedCustomer.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                </c:TupleLayout.RightSide>
-            </c:TupleLayout>
-            <c:TupleLayout>
-                <c:TupleLayout.LeftSide>
-                    <TextBlock Text="Imagen" />
-                </c:TupleLayout.LeftSide>
-                <c:TupleLayout.RightSide>
-                    <TextBox
-                        Text="{Binding ImagePath.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                </c:TupleLayout.RightSide>
-            </c:TupleLayout>
-            <c:TupleLayout>
-                <c:TupleLayout.RightSide>
-                    <c:TupleLayout>
-                        <c:TupleLayout.LeftSide>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel b:Children.Margin="0,2,0,2">
+                <c:TupleLayout>
+                    <c:TupleLayout.LeftSide>
+                        <TextBlock Text="Nombre" />
+                    </c:TupleLayout.LeftSide>
+                    <c:TupleLayout.RightSide>
+                        <TextBox
+                            Text="{Binding Name.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                    </c:TupleLayout.RightSide>
+                </c:TupleLayout>
+                <c:TupleLayout>
+                    <c:TupleLayout.LeftSide>
+                        <TextBlock Text="Descripción" />
+                    </c:TupleLayout.LeftSide>
+                    <c:TupleLayout.RightSide>
+                        <TextBox
+                            Text="{Binding Description.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                    </c:TupleLayout.RightSide>
+                </c:TupleLayout>
+                <c:TupleLayout>
+                    <c:TupleLayout.LeftSide>
+                        <TextBlock Text="Cliente" />
+                    </c:TupleLayout.LeftSide>
+                    <c:TupleLayout.RightSide>
+                        <ComboBox ItemsSource="{Binding Customers}"
+                                  SelectedItem="{Binding SelectedCustomer.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </c:TupleLayout.RightSide>
+                </c:TupleLayout>
+                <c:TupleLayout>
+                    <c:TupleLayout.LeftSide>
+                        <TextBlock Text="Imagen" />
+                    </c:TupleLayout.LeftSide>
+                    <c:TupleLayout.RightSide>
+                        <DockPanel>
+                            <Button Content="..." Width="32" Margin="8,0,0,0" DockPanel.Dock="Right" />
+                            <TextBox
+                                Text="{Binding ImagePath.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </DockPanel>
+                    </c:TupleLayout.RightSide>
+                </c:TupleLayout>
+                <c:TupleLayout>
+                    <c:TupleLayout.RightSide>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
                             <TextBlock Text="Nº Cajas en el anillo" />
-                        </c:TupleLayout.LeftSide>
-                        <c:TupleLayout.RightSide>
-                            <TextBox MaxWidth="120" MinWidth="80" HorizontalAlignment="Left"
-                                Text="{Binding BoxCount.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                        </c:TupleLayout.RightSide>
-                    </c:TupleLayout>
-                </c:TupleLayout.RightSide>
-            </c:TupleLayout>
-        </StackPanel>
+                            <TextBox Grid.Column="1" MaxWidth="120" MinWidth="80" HorizontalAlignment="Left"
+                                     Margin="4,0,0,0"
+                                     Text="{Binding BoxCount.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </Grid>
+                    </c:TupleLayout.RightSide>
+                </c:TupleLayout>
+            </StackPanel></ScrollViewer>
         <StackPanel Grid.Row="1">
             <TextBlock Text="{Binding IsDirty}" />
-            <UniformGrid Rows="1">
-                <Button Content="Cancel edit" Command="{Binding CancelEditCommand}" />
-                <Button Content="Save" Command="{Binding SaveCommand}" />
+            <UniformGrid Rows="1" IsEnabled="{Binding IsDirty}" b:Children.Margin="4,0,4,0" Margin="{StaticResource NormalVerticalThickness}">
+                <UniformGrid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="{StaticResource NormalHorizontalThickness}" />
+                    </Style>
+                </UniformGrid.Resources>
+                <Button Content="Cancelar" Command="{Binding CancelEditCommand}" Style="{StaticResource GreenButtonStyle}" />
+                <Button Content="Guardar cambios" Command="{Binding SaveCommand}" Style="{StaticResource PinkButtonStyle}" />
             </UniformGrid>
         </StackPanel>
     </Grid>
-
 
 </UserControl>

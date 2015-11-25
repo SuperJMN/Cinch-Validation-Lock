@@ -37,6 +37,12 @@ namespace TestListBoxCachonda.Configuration
                });
 
             SetupDataWrappers();
+            SetupFixedData();
+        }
+
+        private void SetupFixedData()
+        {
+            Customers = FixedData.Customers.Select(customer => new CustomerViewModel { Id = customer.Id, Name = customer.Name});
         }
 
         private void SetupDataWrappers()
@@ -180,5 +186,7 @@ namespace TestListBoxCachonda.Configuration
                 return isDirty;
             }
         }
+
+        public IEnumerable<CustomerViewModel> Customers { get; set; }
     }
 }
