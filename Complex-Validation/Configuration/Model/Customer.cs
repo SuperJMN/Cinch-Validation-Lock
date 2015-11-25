@@ -1,4 +1,4 @@
-﻿namespace TestListBoxCachonda.Configuration.Model
+﻿namespace ComplexValidation.Configuration.Model
 {
     public class Customer
     {

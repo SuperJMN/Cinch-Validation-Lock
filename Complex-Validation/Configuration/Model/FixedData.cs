@@ -1,4 +1,4 @@
-﻿namespace TestListBoxCachonda.Configuration.Model
+﻿namespace ComplexValidation.Configuration.Model
 {
     using System;
     using System.Collections.Generic;

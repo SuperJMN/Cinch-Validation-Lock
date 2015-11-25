@@ -1,4 +1,4 @@
-﻿namespace TestListBoxCachonda
+﻿namespace ComplexValidation
 {
     using System.Collections.Generic;
     using System.Windows;

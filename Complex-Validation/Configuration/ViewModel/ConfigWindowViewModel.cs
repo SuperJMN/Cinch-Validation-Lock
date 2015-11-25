@@ -1,4 +1,4 @@
-﻿namespace TestListBoxCachonda.Configuration.ViewModel
+﻿namespace ComplexValidation.Configuration.ViewModel
 {
     using System.Collections.ObjectModel;
     using GalaSoft.MvvmLight.Command;

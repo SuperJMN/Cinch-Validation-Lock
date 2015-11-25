@@ -1,4 +1,4 @@
-namespace TestListBoxCachonda.Configuration.View.Supporters
+namespace ComplexValidation.Configuration.View.Supporters
 {
     using System;
     using System.Globalization;

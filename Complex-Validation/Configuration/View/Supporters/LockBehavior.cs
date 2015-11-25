@@ -1,4 +1,4 @@
-﻿namespace TestListBoxCachonda.Configuration.View.Supporters
+﻿namespace ComplexValidation.Configuration.View.Supporters
 {
     using System.Windows;
     using System.Windows.Controls;
@@ -34,7 +34,16 @@
         {
             if (IsLocked && !element.IsMouseOver)
             {
+                TryExecuteScapeAttemptCommand();
                 mouseButtonEventArgs.Handled = true;
+            }
+        }
+
+        private void TryExecuteScapeAttemptCommand()
+        {
+            if (ScapeAttemptCommand != null && ScapeAttemptCommand.CanExecute(ScapeAttemptCommandParameter))
+            {
+                ScapeAttemptCommand.Execute(ScapeAttemptCommandParameter);
             }
         }
 
@@ -48,6 +57,30 @@
         {
             get { return (bool) GetValue(IsLockedProperty); }
             set { SetValue(IsLockedProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScapeAttemptCommandProperty = DependencyProperty.Register(
+            "ScapeAttemptCommand",
+            typeof (ICommand),
+            typeof (LockBehavior),
+            new PropertyMetadata(default(ICommand)));
+
+        public ICommand ScapeAttemptCommand
+        {
+            get { return (ICommand) GetValue(ScapeAttemptCommandProperty); }
+            set { SetValue(ScapeAttemptCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScapeAttemptCommandParameterProperty = DependencyProperty.Register(
+            "ScapeAttemptCommandParameter",
+            typeof (object),
+            typeof (LockBehavior),
+            new PropertyMetadata(default(object)));
+
+        public object ScapeAttemptCommandParameter
+        {
+            get { return (object) GetValue(ScapeAttemptCommandParameterProperty); }
+            set { SetValue(ScapeAttemptCommandParameterProperty, value); }
         }
     }
 }

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-
-namespace TestListBoxCachonda
+﻿namespace ComplexValidation
 {
-    using Configuration;
+    using System.Windows;
     using Configuration.ViewModel;
     using ConfigWindow = Configuration.View.ConfigWindow;
 

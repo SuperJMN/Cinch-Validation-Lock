@@ -1,4 +1,4 @@
-﻿namespace TestListBoxCachonda.Configuration.View
+﻿namespace ComplexValidation.Configuration.View
 {
     /// <summary>
     /// Interaction logic for FieldControl.xaml

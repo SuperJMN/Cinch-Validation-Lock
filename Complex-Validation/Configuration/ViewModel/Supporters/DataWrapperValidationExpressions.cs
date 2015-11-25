@@ -1,4 +1,4 @@
-namespace TestListBoxCachonda.Configuration.ViewModel.Supporters
+namespace ComplexValidation.Configuration.ViewModel.Supporters
 {
     using CinchExtended.BusinessObjects;
 

@@ -1,9 +1,8 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:TestListBoxCachonda"
     xmlns:configuration="clr-namespace:TestListBoxCachonda.Configuration"
-    xmlns:supporters="clr-namespace:TestListBoxCachonda.Configuration.View.Supporters">
+    xmlns:supporters="clr-namespace:ComplexValidation.Configuration.View.Supporters">
 
 
     <Style TargetType="{x:Type supporters:TupleLayout}">

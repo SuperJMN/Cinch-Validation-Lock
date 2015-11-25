@@ -1,14 +1,14 @@
-namespace TestListBoxCachonda.Configuration.ViewModel
+namespace ComplexValidation.Configuration.ViewModel
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using Annotations;
     using CinchExtended.BusinessObjects;
     using CinchExtended.ViewModels;
     using GalaSoft.MvvmLight.Command;
     using Model;
+    using Properties;
     using Supporters;
 
     public class FieldViewModel : EditableValidatingViewModelBase

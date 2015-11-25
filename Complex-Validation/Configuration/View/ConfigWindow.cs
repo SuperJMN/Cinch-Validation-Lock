@@ -1,4 +1,4 @@
-﻿namespace TestListBoxCachonda.Configuration.View
+﻿namespace ComplexValidation.Configuration.View
 {
     using System.Windows;
 
