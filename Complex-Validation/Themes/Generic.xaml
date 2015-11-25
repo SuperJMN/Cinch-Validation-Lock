@@ -1,14 +1,16 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:TestListBoxCachonda">
+    xmlns:local="clr-namespace:TestListBoxCachonda"
+    xmlns:configuration="clr-namespace:TestListBoxCachonda.Configuration"
+    xmlns:supporters="clr-namespace:TestListBoxCachonda.Configuration.View.Supporters">
 
 
-    <Style TargetType="{x:Type local:TupleLayout}">
+    <Style TargetType="{x:Type supporters:TupleLayout}">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:TupleLayout}">
+                <ControlTemplate TargetType="{x:Type supporters:TupleLayout}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding Padding}">

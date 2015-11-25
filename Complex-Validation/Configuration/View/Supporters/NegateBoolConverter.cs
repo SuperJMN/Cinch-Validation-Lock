@@ -1,7 +1,7 @@
-namespace TestListBoxCachonda
+namespace TestListBoxCachonda.Configuration.View.Supporters
 {
     using System;
-    using System.Globalization;    
+    using System.Globalization;
     using System.Windows.Data;
 
     public class NegateBoolConverter : IValueConverter

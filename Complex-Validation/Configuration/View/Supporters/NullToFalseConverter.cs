@@ -1,25 +1,19 @@
-namespace TestListBoxCachonda
+namespace TestListBoxCachonda.Configuration.View.Supporters
 {
     using System;
     using System.Globalization;
-    using System.Windows;
     using System.Windows.Data;
 
-    public class EmptyToNullConverter : IValueConverter
+    public class NullToFalseConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (string.IsNullOrEmpty((string) value))
-            {
-                return null;
-            }
-
-            return value;
+            return value != null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value;
+            throw new NotSupportedException();
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace TestListBoxCachonda.Configuration
+﻿namespace TestListBoxCachonda.Configuration.View.Supporters
 {
+    using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Media;
 

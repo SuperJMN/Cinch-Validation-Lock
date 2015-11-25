@@ -89,32 +89,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Configuration\Customer.cs" />
-    <Compile Include="Configuration\CustomerViewModel.cs" />
-    <Compile Include="Configuration\MarginApplier.cs" />
-    <Compile Include="Configuration\VisualTreeUtils.cs" />
-    <Compile Include="Configuration\DataWrapperRules.cs" />
-    <Compile Include="Configuration\DataWrapperValidationExpressions.cs" />
-    <Compile Include="Configuration\FieldControl.xaml.cs">
+    <Compile Include="Configuration\Model\Customer.cs" />
+    <Compile Include="Configuration\ViewModel\CustomerViewModel.cs" />
+    <Compile Include="Configuration\Model\FieldType.cs" />
+    <Compile Include="Configuration\View\Supporters\Children.cs" />
+    <Compile Include="Configuration\View\Supporters\VisualTreeUtils.cs" />
+    <Compile Include="Configuration\ViewModel\Supporters\DataWrapperRules.cs" />
+    <Compile Include="Configuration\ViewModel\Supporters\DataWrapperValidationExpressions.cs" />
+    <Compile Include="Configuration\View\FieldControl.cs">
       <DependentUpon>FieldControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\FieldViewModel.cs" />
-    <Compile Include="Configuration\FixedData.cs" />
-    <Compile Include="Configuration\ILomoConfigRepository.cs" />
-    <Compile Include="Configuration\LockBehavior.cs" />
-    <Compile Include="Configuration\LomoConfigViewModel.cs" />
-    <Compile Include="Configuration\SampleData.cs" />
-    <Compile Include="Configuration\NullToFalseConverter.cs" />
-    <Compile Include="Configuration\TupleLayout.cs" />
-    <Page Include="Configuration\ConfigWindow.xaml">
+    <Compile Include="Configuration\ViewModel\FieldViewModel.cs" />
+    <Compile Include="Configuration\Model\FixedData.cs" />
+    <Compile Include="Configuration\Model\ILomoConfigRepository.cs" />
+    <Compile Include="Configuration\View\Supporters\LockBehavior.cs" />
+    <Compile Include="Configuration\ViewModel\LomoConfigViewModel.cs" />
+    <Compile Include="Configuration\Model\SampleData.cs" />
+    <Compile Include="Configuration\View\Supporters\NullToFalseConverter.cs" />
+    <Compile Include="Configuration\View\Supporters\TupleLayout.cs" />
+    <Page Include="Configuration\View\ConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Configuration\FieldControl.xaml">
+    <Page Include="Configuration\View\FieldControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Configuration\LomoConfigControl.xaml">
+    <Page Include="Configuration\View\LomoConfigControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -130,14 +131,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\ConfigWindowViewModel.cs" />
-    <Compile Include="Configuration\ConfigWindow.cs">
+    <Compile Include="Configuration\ViewModel\ConfigWindowViewModel.cs" />
+    <Compile Include="Configuration\View\ConfigWindow.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\LomoConfigControl.xaml.cs">
+    <Compile Include="Configuration\View\LomoConfigControl.cs">
       <DependentUpon>LomoConfigControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\EmptyToNullConverter.cs" />
+    <Compile Include="Configuration\View\Supporters\EmptyToNullConverter.cs" />
     <Compile Include="ListBoxEx.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -150,7 +151,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\NegateBoolConverter.cs" />
+    <Compile Include="Configuration\View\Supporters\NegateBoolConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -9,6 +9,8 @@ using System.Windows;
 namespace TestListBoxCachonda
 {
     using Configuration;
+    using Configuration.ViewModel;
+    using ConfigWindow = Configuration.View.ConfigWindow;
 
     /// <summary>
     /// Interaction logic for App.xaml
@@ -20,7 +22,7 @@ namespace TestListBoxCachonda
             base.OnStartup(e);
 
             var p = new ConfigWindowViewModel(null);
-            var configWindow = new Configuration.ConfigWindow();
+            var configWindow = new ConfigWindow();
             configWindow.DataContext = p;
             configWindow.Show();            
         }

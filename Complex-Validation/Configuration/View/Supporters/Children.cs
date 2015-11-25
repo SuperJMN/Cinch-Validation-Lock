@@ -1,4 +1,4 @@
-﻿namespace TestListBoxCachonda.Configuration
+﻿namespace TestListBoxCachonda.Configuration.View.Supporters
 {
     using System.Windows;
     using System.Windows.Controls;

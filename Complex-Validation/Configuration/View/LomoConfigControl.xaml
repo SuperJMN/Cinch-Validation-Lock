@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="TestListBoxCachonda.Configuration.View.LomoConfigControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:s="clr-namespace:TestListBoxCachonda.Configuration.View.Supporters"
+             xmlns:viewModel="clr-namespace:TestListBoxCachonda.Configuration.ViewModel"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModel:LomoConfigViewModel}"
+             Grid.IsSharedSizeScope="True"
+             d:DesignHeight="357.321" d:DesignWidth="504.715">
+    <i:Interaction.Behaviors>
+        <s:LockBehavior IsLocked="{Binding IsDirty}" />
+    </i:Interaction.Behaviors>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="\Themes\Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type viewModel:CustomerViewModel}">
+                <TextBlock Text="{Binding Name}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel s:Children.Margin="0,2,0,2">
+                <s:TupleLayout>
+                    <s:TupleLayout.LeftSide>
+                        <TextBlock Text="Nombre" />
+                    </s:TupleLayout.LeftSide>
+                    <s:TupleLayout.RightSide>
+                        <TextBox
+                            Text="{Binding Name.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                    </s:TupleLayout.RightSide>
+                </s:TupleLayout>
+                <s:TupleLayout>
+                    <s:TupleLayout.LeftSide>
+                        <TextBlock Text="Descripción" />
+                    </s:TupleLayout.LeftSide>
+                    <s:TupleLayout.RightSide>
+                        <TextBox
+                            Text="{Binding Description.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                    </s:TupleLayout.RightSide>
+                </s:TupleLayout>
+                <s:TupleLayout>
+                    <s:TupleLayout.LeftSide>
+                        <TextBlock Text="Cliente" />
+                    </s:TupleLayout.LeftSide>
+                    <s:TupleLayout.RightSide>
+                        <ComboBox ItemsSource="{Binding Customers}"
+                                  SelectedItem="{Binding SelectedCustomer.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </s:TupleLayout.RightSide>
+                </s:TupleLayout>
+                <s:TupleLayout>
+                    <s:TupleLayout.LeftSide>
+                        <TextBlock Text="Imagen" />
+                    </s:TupleLayout.LeftSide>
+                    <s:TupleLayout.RightSide>
+                        <DockPanel>
+                            <Button Content="..." Width="32" Margin="8,0,0,0" DockPanel.Dock="Right" />
+                            <TextBox
+                                Text="{Binding ImagePath.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </DockPanel>
+                    </s:TupleLayout.RightSide>
+                </s:TupleLayout>
+                <s:TupleLayout>
+                    <s:TupleLayout.RightSide>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Nº Cajas en el anillo" />
+                            <TextBox Grid.Column="1" MaxWidth="120" MinWidth="80" HorizontalAlignment="Left"
+                                     Margin="4,0,0,0"
+                                     Text="{Binding BoxCount.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </Grid>
+                    </s:TupleLayout.RightSide>
+                </s:TupleLayout>
+            </StackPanel>
+        </ScrollViewer>
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="{Binding IsDirty}" />
+            <UniformGrid Rows="1" IsEnabled="{Binding IsDirty}" s:Children.Margin="4,0,4,0"
+                         Margin="{StaticResource NormalVerticalThickness}">
+                <UniformGrid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="{StaticResource NormalHorizontalThickness}" />
+                    </Style>
+                </UniformGrid.Resources>
+                <Button Content="Cancelar" Command="{Binding CancelEditCommand}"
+                        Style="{StaticResource GreenButtonStyle}" />
+                <Button Content="Guardar cambios" Command="{Binding SaveCommand}"
+                        Style="{StaticResource PinkButtonStyle}" />
+            </UniformGrid>
+        </StackPanel>
+    </Grid>
+
+</UserControl>
