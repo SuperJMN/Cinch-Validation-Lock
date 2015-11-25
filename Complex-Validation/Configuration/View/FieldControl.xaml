@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <i:Interaction.Behaviors>
-        <supporters:LockBehavior IsLocked="{Binding IsDirty}" />
+        <supporters:LockBehavior IsLocked="{Binding IsDirty}" ScapeAttemptCommand="{Binding ScapeAttemptCommand}" />
     </i:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
@@ -80,11 +80,12 @@
                                          MinWidth="50"
                                          Text="{Binding Min.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, TargetNullValue=''}" />
                             </DockPanel>
-                            <DockPanel >
+                            <DockPanel>
                                 <TextBlock Text="Máx." VerticalAlignment="Center" />
                                 <TextBox Margin="8,0,0,0" MinWidth="50"
                                          Text="{Binding Max.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, TargetNullValue=''}" />
-                            </DockPanel></UniformGrid>
+                            </DockPanel>
+                        </UniformGrid>
                     </Grid>
                 </supporters:TupleLayout.RightSide>
             </supporters:TupleLayout>
@@ -117,9 +118,11 @@
         </StackPanel>
         <StackPanel Grid.Row="1">
             <TextBlock Text="{Binding IsDirty}" />
-            <UniformGrid Rows="1" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}" Margin="{StaticResource NormalVerticalThickness}">
-                <Button Content="Cancel edit" Command="{Binding CancelEditCommand}" Style="{StaticResource PinkButtonStyle}" />
-                <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource GreenButtonStyle}" />
+            <UniformGrid Rows="1" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}"
+                         IsEnabled="{Binding IsDirty}" Margin="{StaticResource NormalVerticalThickness}">
+                <Button Content="Cancelar" Command="{Binding CancelEditCommand}"
+                        Style="{StaticResource PinkButtonStyle}" />
+                <Button Content="Guardar" Command="{Binding SaveCommand}" Style="{StaticResource GreenButtonStyle}" />
             </UniformGrid>
         </StackPanel>
     </Grid>

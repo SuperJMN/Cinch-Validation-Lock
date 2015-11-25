@@ -4,6 +4,8 @@ namespace ComplexValidation.Configuration.ViewModel
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using System.Windows;
+    using System.Windows.Input;
     using CinchExtended.BusinessObjects;
     using CinchExtended.ViewModels;
     using GalaSoft.MvvmLight.Command;
@@ -17,7 +19,11 @@ namespace ComplexValidation.Configuration.ViewModel
         private static readonly PropertyChangedEventArgs NamePropertyChangeArgs = new PropertyChangedEventArgs("Name");
         private static readonly PropertyChangedEventArgs DescriptionPropertyChangeArgs = new PropertyChangedEventArgs("Description");
 
+        private const string Required = "Requerido";
+        private const string InvalidRange = "Rango no válido";
+
         private RelayCommand saveEditCommand;
+        private ICommand scapeAttemptCommand;
 
         public FieldViewModel([NotNull] string name)
         {
@@ -47,10 +53,10 @@ namespace ComplexValidation.Configuration.ViewModel
         private void SetupDataWrappers()
         {
             Name = new DataWrapper<string>(this, NamePropertyChangeArgs) { DataValue = name };
-            Name.AddRule(DataWrapperRules.NotNullOrEmtpyRule("Pon algo"));
+            Name.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
             Description = new DataWrapper<string>(this, DescriptionPropertyChangeArgs) { DataValue = string.Empty };
-            Description.AddRule(DataWrapperRules.NotNullOrEmtpyRule("Pon algo"));
+            Description.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
             IsActive = new DataWrapper<bool>(this, new PropertyChangedEventArgs("IsActive"));
             IsRequired = new DataWrapper<bool>(this, new PropertyChangedEventArgs("IsRequired"));
@@ -60,8 +66,8 @@ namespace ComplexValidation.Configuration.ViewModel
             Min = new DataWrapper<int?>(this, new PropertyChangedEventArgs("Min"));
             Max = new DataWrapper<int?>(this, new PropertyChangedEventArgs("Max"));
 
-            Min.AddRule(DataWrapperRules.MinMax(Min, Max, "No"));
-            Max.AddRule(DataWrapperRules.MinMax(Min, Max, "No"));
+            Min.AddRule(DataWrapperRules.MinMax(Min, Max, InvalidRange));
+            Max.AddRule(DataWrapperRules.MinMax(Min, Max, InvalidRange));
 
             Max.PropertyChanged += UpdateMinMaxState;
             Min.PropertyChanged += UpdateMinMaxState;
@@ -178,5 +184,15 @@ namespace ComplexValidation.Configuration.ViewModel
 
         public IEnumerable<int> Angles { get; set; }
         public DataWrapper<int> SelectedAngle { get; set; }
+
+        public ICommand ScapeAttemptCommand
+        {
+            get { return scapeAttemptCommand ?? (scapeAttemptCommand = new RelayCommand(OnScapeAttempt)) ; }
+        }
+
+        private static void OnScapeAttempt()
+        {
+            MessageBox.Show("No te me escapes, cabrón, que hay cambios sin guardar");
+        }
     }
 }

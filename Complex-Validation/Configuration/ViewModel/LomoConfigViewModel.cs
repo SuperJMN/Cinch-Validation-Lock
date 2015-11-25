@@ -5,6 +5,8 @@ namespace ComplexValidation.Configuration.ViewModel
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
+    using System.Windows;
+    using System.Windows.Input;
     using CinchExtended.BusinessObjects;
     using CinchExtended.ViewModels;
     using GalaSoft.MvvmLight.Command;
@@ -18,6 +20,10 @@ namespace ComplexValidation.Configuration.ViewModel
         private RelayCommand addFieldCommand;
         private FieldViewModel selectedField;
         private RelayCommand saveEditCommand;
+        private ICommand scapeAttemptCommand;
+
+        private const string Required = "Requerido";
+        private const string InvalidBoxCount = "Número de cajas no válido";
 
         private LomoConfigViewModel(LomoConfigViewModel lomoConfigViewModel)
         {
@@ -50,14 +56,14 @@ namespace ComplexValidation.Configuration.ViewModel
         private void SetupDataWrappers()
         {
             Name = new DataWrapper<string>(this, new PropertyChangedEventArgs("Name")) { DataValue = name };
-            Name.AddRule(DataWrapperRules.NotNullOrEmtpyRule("Pon algo"));
+            Name.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
             Description = new DataWrapper<string>(this, new PropertyChangedEventArgs("Description")) { DataValue = "Descripción" };
-            Description.AddRule(DataWrapperRules.NotNullOrEmtpyRule("Pon algo"));
+            Description.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
             ImagePath = new DataWrapper<string>(this, new PropertyChangedEventArgs("ImagePath"));
             BoxCount = new DataWrapper<int>(this, new PropertyChangedEventArgs("BoxCount")) { DataValue = 1 };
-            BoxCount.AddRule(DataWrapperRules.NumberBetween(1, 100, "Rango no permitido"));
+            BoxCount.AddRule(DataWrapperRules.NumberBetween(1, 100, InvalidBoxCount));
             SelectedCustomer = new DataWrapper<CustomerViewModel>(this, new PropertyChangedEventArgs("SelectedCustomer"));
 
             SubscribeToChangesInAllDataWrappers();
@@ -190,5 +196,15 @@ namespace ComplexValidation.Configuration.ViewModel
         }
 
         public IEnumerable<CustomerViewModel> Customers { get; set; }
+
+        public ICommand ScapeAttemptCommand
+        {
+            get { return scapeAttemptCommand ?? (scapeAttemptCommand = new RelayCommand(OnScapeAttempt)); }
+        }
+
+        private static void OnScapeAttempt()
+        {
+            MessageBox.Show("No te me escapes, cabrón, que hay cambios sin guardar");
+        }
     }
 }

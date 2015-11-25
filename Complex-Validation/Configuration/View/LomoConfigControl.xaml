@@ -11,7 +11,7 @@
              Grid.IsSharedSizeScope="True"
              d:DesignHeight="357.321" d:DesignWidth="504.715">
     <i:Interaction.Behaviors>
-        <s:LockBehavior IsLocked="{Binding IsDirty}" />
+        <s:LockBehavior IsLocked="{Binding IsDirty}" ScapeAttemptCommand="{Binding ScapeAttemptCommand}" />
     </i:Interaction.Behaviors>
     <UserControl.Resources>
         <ResourceDictionary>
