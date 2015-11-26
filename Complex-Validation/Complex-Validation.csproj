@@ -98,12 +98,15 @@
     <Compile Include="Configuration\Model\LomoConfig.cs" />
     <Compile Include="Configuration\ViewModel\ModelConverter.cs" />
     <Compile Include="Configuration\ViewModel\ViewModelModelConverter.cs" />
+    <Compile Include="Configuration\View\LomoConfigControl.xaml.cs">
+      <DependentUpon>LomoConfigControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Configuration\View\Supporters\Children.cs" />
     <Compile Include="Configuration\View\Supporters\VisualTreeUtils.cs" />
     <Compile Include="Configuration\ViewModel\Supporters\DataWrapperRules.cs" />
     <Compile Include="Configuration\ViewModel\Supporters\DataWrapperValidationExpressions.cs" />
-    <Compile Include="Configuration\View\FieldControl.cs">
-      <DependentUpon>FieldControl.xaml</DependentUpon>
+    <Compile Include="Configuration\View\FieldDetailsControl.cs">
+      <DependentUpon>FieldDetailsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration\ViewModel\FieldViewModel.cs" />
     <Compile Include="Configuration\Model\FixedData.cs" />
@@ -117,11 +120,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Configuration\View\FieldControl.xaml">
+    <Page Include="Configuration\View\FieldDetailsControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Configuration\View\LomoConfigControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Configuration\View\LomoConfigDetailsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,8 +148,8 @@
     <Compile Include="Configuration\View\ConfigWindow.cs">
       <DependentUpon>ConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\View\LomoConfigControl.cs">
-      <DependentUpon>LomoConfigControl.xaml</DependentUpon>
+    <Compile Include="Configuration\View\LomoConfigDetailsControl.cs">
+      <DependentUpon>LomoConfigDetailsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration\View\Supporters\EmptyToNullConverter.cs" />
     <Compile Include="ListBoxEx.cs" />

@@ -1,11 +1,11 @@
 ﻿namespace ComplexValidation.Configuration.View
 {
     /// <summary>
-    /// Interaction logic for FieldControl.xaml
+    /// Interaction logic for FieldDetailsControl.xaml
     /// </summary>
-    public partial class FieldControl
+    public partial class LomoConfigDetailsControl
     {
-        public FieldControl()
+        public LomoConfigDetailsControl()
         {
             InitializeComponent();
         }
