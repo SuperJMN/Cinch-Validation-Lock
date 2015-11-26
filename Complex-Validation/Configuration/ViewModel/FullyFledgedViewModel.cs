@@ -44,8 +44,10 @@ namespace ComplexValidation.Configuration.ViewModel
                         EndEdit();
                         BeginEdit();
                         NotifyPropertyChanged("IsDirty");
+                        SaveCommand.RaiseCanExecuteChanged();
+                        CancelEditCommand.RaiseCanExecuteChanged();
                     },
-                    () => IsValid));
+                    () => IsValid && IsDirty));
             }
         }
 
@@ -56,11 +58,14 @@ namespace ComplexValidation.Configuration.ViewModel
                 return cancelCommand ?? (cancelCommand = new RelayCommand(
                     () =>
                     {
+
                         CancelEdit();
                         BeginEdit();
-                    }));
+                    }, () => IsDirty));
             }
         }
+
+        public int? Id { get; set; }
 
         public ICommand ScapeAttemptCommand
         {
@@ -83,13 +88,14 @@ namespace ComplexValidation.Configuration.ViewModel
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             NotifyPropertyChanged("IsDirty");
+            NotifyPropertyChanged("IsValid");
             CancelEditCommand.RaiseCanExecuteChanged();
             SaveCommand.RaiseCanExecuteChanged();
         }
 
         private static bool IsChangeIndicator(DataWrapperBase dw)
         {
-            var type = typeof (IChangeIndicator);
+            var type = typeof(IChangeIndicator);
             return type.IsInstanceOfType(dw);
         }
 

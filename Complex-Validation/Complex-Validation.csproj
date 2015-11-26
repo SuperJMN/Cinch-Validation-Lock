@@ -90,9 +90,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Configuration\Model\Customer.cs" />
+    <Compile Include="Configuration\Model\Field.cs" />
+    <Compile Include="Configuration\Model\LomoConfigService.cs" />
     <Compile Include="Configuration\ViewModel\CustomerViewModel.cs" />
     <Compile Include="Configuration\Model\FieldType.cs" />
     <Compile Include="Configuration\ViewModel\FullyFledgedViewModel.cs" />
+    <Compile Include="Configuration\Model\LomoConfig.cs" />
+    <Compile Include="Configuration\ViewModel\ModelConverter.cs" />
+    <Compile Include="Configuration\ViewModel\ViewModelModelConverter.cs" />
     <Compile Include="Configuration\View\Supporters\Children.cs" />
     <Compile Include="Configuration\View\Supporters\VisualTreeUtils.cs" />
     <Compile Include="Configuration\ViewModel\Supporters\DataWrapperRules.cs" />
@@ -102,7 +107,7 @@
     </Compile>
     <Compile Include="Configuration\ViewModel\FieldViewModel.cs" />
     <Compile Include="Configuration\Model\FixedData.cs" />
-    <Compile Include="Configuration\Model\ILomoConfigRepository.cs" />
+    <Compile Include="Configuration\Model\ILomoConfigService.cs" />
     <Compile Include="Configuration\View\Supporters\LockBehavior.cs" />
     <Compile Include="Configuration\ViewModel\LomoConfigViewModel.cs" />
     <Compile Include="Configuration\Model\SampleData.cs" />

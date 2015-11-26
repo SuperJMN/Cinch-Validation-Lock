@@ -3,16 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:s="clr-namespace:ComplexValidation.Configuration.View.Supporters"
              xmlns:viewModel="clr-namespace:ComplexValidation.Configuration.ViewModel"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:LomoConfigViewModel}"
              Grid.IsSharedSizeScope="True"
              d:DesignHeight="357.321" d:DesignWidth="504.715">
-    <i:Interaction.Behaviors>
+    <!--<i:Interaction.Behaviors>
         <s:LockBehavior IsLocked="{Binding IsDirty}" ScapeAttemptCommand="{Binding ScapeAttemptCommand}" />
-    </i:Interaction.Behaviors>
+    </i:Interaction.Behaviors>-->
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -35,7 +34,7 @@
                         <TextBlock Text="Nombre" />
                     </s:TupleLayout.LeftSide>
                     <s:TupleLayout.RightSide>
-                        <TextBox
+                        <TextBox x:Name="NameTextBox"
                             Text="{Binding Name.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
                     </s:TupleLayout.RightSide>
                 </s:TupleLayout>
@@ -88,16 +87,14 @@
         </ScrollViewer>
         <StackPanel Grid.Row="1">
             <TextBlock Text="{Binding IsDirty}" />
-            <UniformGrid Rows="1" IsEnabled="{Binding IsDirty}" s:Children.Margin="4,0,4,0"
+            <UniformGrid Rows="1" s:Children.Margin="4,0,4,0"
                          Margin="{StaticResource NormalVerticalThickness}">
                 <UniformGrid.Resources>
                     <Style TargetType="Button">
                         <Setter Property="Margin" Value="{StaticResource NormalHorizontalThickness}" />
                     </Style>
                 </UniformGrid.Resources>
-                <Button Content="Cancelar" Command="{Binding CancelEditCommand}"
-                        Style="{StaticResource GreenButtonStyle}" />
-                <Button Content="Guardar" Command="{Binding SaveCommand}"
+                <Button Content="Restablecer" Command="{Binding CancelEditCommand}"
                         Style="{StaticResource PinkButtonStyle}" />
             </UniformGrid>
         </StackPanel>

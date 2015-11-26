@@ -22,6 +22,7 @@ namespace ComplexValidation.Configuration.ViewModel
         private RelayCommand addFieldCommand;
         private FieldViewModel selectedField;
         private ICommand chooseImageCommand;
+        private ObservableCollection<FieldViewModel> fields;
 
         private const string Required = "Requerido";
         private const string InvalidBoxCount = "Número de cajas no válido";
@@ -70,8 +71,19 @@ namespace ComplexValidation.Configuration.ViewModel
         }
 
         public DataWrapper<string> Name { get; set; }
-        public int? Id { get; set; }
-        public ObservableCollection<FieldViewModel> Fields { get; set; }
+
+        public ObservableCollection<FieldViewModel> Fields
+        {
+            get { return fields; }
+            set
+            {
+                fields = value;
+                foreach (var fieldViewModel in fields)
+                {
+                    SubscribeToChanges(fieldViewModel);
+                }
+            }
+        }
 
         public FieldViewModel SelectedField
         {
@@ -80,14 +92,17 @@ namespace ComplexValidation.Configuration.ViewModel
             {
                 if (selectedField != null)
                 {
-                    selectedField.EndEdit();
+                    UnsubscribeFromChanges(selectedField);
                 }
 
                 selectedField = value;
 
                 if (selectedField != null)
                 {
-                    selectedField.BeginEdit();
+                    if (!selectedField.IsDirty)
+                    {
+                        selectedField.BeginEdit();
+                    }
                 }
 
                 NotifyPropertyChanged("SelectedField");
@@ -119,9 +134,27 @@ namespace ComplexValidation.Configuration.ViewModel
 
         private void AddField()
         {
-            Fields.Add(new FieldViewModel("Field"));
+            var newField = new FieldViewModel("Field");
+            Fields.Add(newField);
+            SelectedField = newField;
+            SubscribeToChanges(newField);
         }
-        
+
+        private void SubscribeToChanges(FieldViewModel field)
+        {
+            field.PropertyChanged += FieldOnPropertyChanged;
+        }
+
+        private void UnsubscribeFromChanges(FieldViewModel field)
+        {
+            field.PropertyChanged -= FieldOnPropertyChanged;
+        }
+
+        private void FieldOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            NotifyPropertyChanged("IsValid");
+        }
+
         public IEnumerable<CustomerViewModel> Customers { get; set; }
 
         public ICommand ChooseImageCommand
@@ -136,6 +169,15 @@ namespace ComplexValidation.Configuration.ViewModel
             {
                 ImagePath.DataValue = openFileService.FileName;
             }
-        }        
+        }
+
+        public override bool IsValid
+        {
+            get
+            {
+                var myDataIsValid = base.IsValid;
+                return myDataIsValid && Fields.All(f => f.IsValid);
+            }
+        }
     }
 }

@@ -24,13 +24,13 @@
             <DataTemplate DataType="{x:Type viewModel:FieldViewModel}">
                 <TextBlock Text="{Binding Name.DataValue}" />
             </DataTemplate>
-            
+
             <supporters:NullToFalseConverter x:Key="NullToFalseConverter" />
-            
+
             <Style TargetType="{x:Type ContentControl}">
                 <Setter Property="Margin" Value="10" />
             </Style>
-            
+
             <Style TargetType="{x:Type HeaderedContentControl}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -38,9 +38,9 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <ContentPresenter ContentSource="Header"/>
+                                <ContentPresenter ContentSource="Header" />
                                 <ContentPresenter Grid.Row="1" />
                             </Grid>
                         </ControlTemplate>
@@ -48,8 +48,21 @@
                 </Setter>
             </Style>
             <Style x:Key="HeaderStyle" TargetType="TextBlock">
-                <Setter Property="FontWeight" Value="Bold"></Setter>
-                <Setter Property="Margin" Value="{StaticResource NormalVerticalThickness}"></Setter>
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Margin" Value="{StaticResource NormalVerticalThickness}" />
+            </Style>
+            <Style x:Key="ErrorHighlightingListBox" TargetType="ListBox">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsValid}" Value="False">
+                                    <Setter Property="Background" Value="{StaticResource PinkErrorValidationColor}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </ResourceDictionary>
 
@@ -64,6 +77,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="282*" />
             <RowDefinition Height="487*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -72,10 +86,10 @@
         <ContentControl>
             <HeaderedContentControl>
                 <HeaderedContentControl.Header>
-                    <TextBlock Text="Tipo de lomo" Style="{StaticResource HeaderStyle}"></TextBlock>
+                    <TextBlock Text="Tipo de lomo" Style="{StaticResource HeaderStyle}" />
                 </HeaderedContentControl.Header>
                 <DockPanel>
-                    <Grid Margin="{StaticResource NormalVerticalThickness}" DockPanel.Dock="Bottom" >
+                    <Grid Margin="{StaticResource NormalVerticalThickness}" DockPanel.Dock="Bottom">
                         <UniformGrid Rows="1" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}"
                                      Margin="-4,0,-4,0">
                             <Button Content="Añadir" Command="{Binding AddCommand}"
@@ -86,7 +100,8 @@
                                     Style="{StaticResource PinkButtonStyle}" />
                         </UniformGrid>
                     </Grid>
-                    <ListBox ItemsSource="{Binding Configs}" SelectedItem="{Binding SelectedConfig, Mode=TwoWay}" />
+                    <ListBox ItemsSource="{Binding Configs}" SelectedItem="{Binding SelectedConfig, Mode=TwoWay}"
+                             Style="{StaticResource ErrorHighlightingListBox}" />
                 </DockPanel>
             </HeaderedContentControl>
         </ContentControl>
@@ -96,14 +111,15 @@
                     <TextBlock Text="Tipo Lomo seleccionado" Style="{StaticResource HeaderStyle}" />
                 </HeaderedContentControl.Header>
 
-                <view:LomoConfigControl DataContext="{Binding SelectedConfig}"
-                                         IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}" />
+                <view:LomoConfigControl Focusable="True" x:Name="LomoConfigControl"
+                                        DataContext="{Binding SelectedConfig}"
+                                        IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}" />
             </HeaderedContentControl>
         </ContentControl>
-        <ContentControl Grid.Row="1" Grid.Column="1" >
+        <ContentControl Grid.Row="1" Grid.Column="1">
             <view:FieldControl Margin="0,40,0,0"
-                DataContext="{Binding SelectedConfig.SelectedField}"
-                IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}" />
+                               DataContext="{Binding SelectedConfig.SelectedField}"
+                               IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}" />
         </ContentControl>
         <ContentControl Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Stretch">
             <HeaderedContentControl VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
@@ -118,12 +134,18 @@
                     </UniformGrid>
                     <ListBox
                         ItemsSource="{Binding Fields}"
-                        SelectedItem="{Binding SelectedField, Mode=TwoWay}" />
+                        SelectedItem="{Binding SelectedField, Mode=TwoWay}" Style="{StaticResource ErrorHighlightingListBox}">
+                        
+                    </ListBox>
                 </DockPanel>
             </HeaderedContentControl>
         </ContentControl>
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="0" d:IsLocked="True" Style="{StaticResource SeparatorBorderStyle}"  />
-        <Border Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Margin="0" Style="{StaticResource SeparatorBorderStyle}" d:IsLocked="True" />
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="0"
+                Style="{StaticResource SeparatorBorderStyle}" d:IsLocked="True" />
+        <Border Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Margin="0"
+                Style="{StaticResource SeparatorBorderStyle}" d:IsLocked="True" />
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Button Style="{StaticResource GreenButtonStyle}" Content="Guardar cambios" Command="{Binding SaveCommand}" />
+        </Grid>
     </Grid>
-
 </Window>

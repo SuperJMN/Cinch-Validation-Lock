@@ -19,9 +19,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <i:Interaction.Behaviors>
+    <!--<i:Interaction.Behaviors>
         <supporters:LockBehavior IsLocked="{Binding IsDirty}" ScapeAttemptCommand="{Binding ScapeAttemptCommand}" />
-    </i:Interaction.Behaviors>
+    </i:Interaction.Behaviors>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -144,10 +144,9 @@
         <StackPanel Grid.Row="1">
             <TextBlock Text="{Binding IsDirty}" />
             <UniformGrid Rows="1" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}"
-                         IsEnabled="{Binding IsDirty}" Margin="{StaticResource NormalVerticalThickness}">
-                <Button Content="Cancelar" Command="{Binding CancelEditCommand}"
+                         Margin="{StaticResource NormalVerticalThickness}">
+                <Button Content="Restablecer" Command="{Binding CancelEditCommand}"
                         Style="{StaticResource PinkButtonStyle}" />
-                <Button Content="Guardar" Command="{Binding SaveCommand}" Style="{StaticResource GreenButtonStyle}" />
             </UniformGrid>
         </StackPanel>
     </Grid>
