@@ -7,13 +7,15 @@ namespace ComplexValidation.Configuration.ViewModel
     {
         public static LomoConfigViewModel ConvertToViewModel(LomoConfig lomoConfig, IOpenFileService openFileService)
         {
-            var viewModel = new LomoConfigViewModel(lomoConfig.Name, openFileService);
-            viewModel.Id = lomoConfig.Id;
-            viewModel.BoxCount.DataValue = lomoConfig.BoxCount;
-            viewModel.SelectedCustomer.DataValue = ConvertToViewModel(lomoConfig.Customer);
-            viewModel.Description.DataValue = lomoConfig.Description;
-            viewModel.ImagePath.DataValue = lomoConfig.ImagePath;
-            
+            var viewModel = new LomoConfigViewModel(lomoConfig.Name, openFileService)
+            {
+                Id = lomoConfig.Id,
+                BoxCount = {DataValue = lomoConfig.BoxCount},
+                SelectedCustomer = {DataValue = ConvertToViewModel(lomoConfig.Customer)},
+                Description = {DataValue = lomoConfig.Description},
+                ImagePath = {DataValue = lomoConfig.ImagePath}
+            };
+
             return viewModel;
         }
 

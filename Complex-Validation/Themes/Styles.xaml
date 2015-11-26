@@ -774,7 +774,7 @@
                 </themes:SystemDropShadowChrome>
             </Popup>
             <ToggleButton x:Name="toggleButton" BorderBrush="{TemplateBinding BorderBrush}"
-                          BorderThickness="{TemplateBinding BorderThickness}" Background="Red"
+                          BorderThickness="{TemplateBinding BorderThickness}" 
                           Grid.ColumnSpan="2"
                           IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                           Style="{StaticResource ComboBoxToggleButton}" />
@@ -909,14 +909,14 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <!--<Setter Property="Validation.ErrorTemplate">
+        <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
                 <ControlTemplate>
                     <DockPanel LastChildFill="True">
                         <TextBlock DockPanel.Dock="Right"
                                    Foreground="Red"
                                    FontSize="14pt"
-                                   Margin="-15,0,0,0" FontWeight="Bold" Text="!">
+                                   Margin="-15,0,0,0" FontWeight="Bold">
                         </TextBlock>
                         <Border>
                             <AdornedElementPlaceholder Name="controlWithError" />
@@ -924,8 +924,13 @@
                     </DockPanel>
                 </ControlTemplate>
             </Setter.Value>
-        </Setter>-->
+        </Setter>
         <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="Background" Value="{StaticResource PinkErrorValidationColor}" />
+                <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+            </Trigger>
             <Trigger Property="IsEditable" Value="true">
                 <Setter Property="IsTabStop" Value="false" />
                 <Setter Property="Padding" Value="2" />
@@ -978,7 +983,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="true">
-                <Setter Property="Background" Value="{StaticResource ValidateErrorBackgroundColor}"></Setter>
+                <Setter Property="Background" Value="{StaticResource PinkErrorValidationColor}" />
                 <Setter Property="ToolTip"
                         Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}" />
             </Trigger>
