@@ -25,7 +25,7 @@ namespace ComplexValidation.Configuration.ViewModel
             get { return AllDataWrappers.Where(IsChangeIndicator).Cast<IChangeIndicator>(); }
         }
 
-        public bool IsDirty
+        public virtual bool IsDirty
         {
             get
             {

@@ -132,6 +132,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Configuration\View\ZonesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -152,6 +156,9 @@
       <DependentUpon>LomoConfigDetailsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration\View\Supporters\EmptyToNullConverter.cs" />
+    <Compile Include="Configuration\View\ZonesControl.xaml.cs">
+      <DependentUpon>ZonesControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ListBoxEx.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">

@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+                    xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <SolidColorBrush x:Key="GrayScreenBackgroundColor" Color="#F5F5F5" />
     <SolidColorBrush x:Key="GraySquareBackgroundLogin" Color="#EFEFEF" />
@@ -994,6 +995,7 @@
     <Thickness x:Key="NormalVerticalThickness">0,8,0,8</Thickness>
     <Thickness x:Key="SmallHorizontalThickness">4,0,4,0</Thickness>
     <Thickness x:Key="NormalHorizontalThickness">8,0,8,0</Thickness>
+    <system:Double x:Key="StandarButtonWidth">150</system:Double>
 
     <!-- EndRegion CheckBoxTemplate-->
 

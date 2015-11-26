@@ -1,14 +1,14 @@
 ﻿<UserControl x:Class="ComplexValidation.Configuration.View.LomoConfigControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ComplexValidation.Configuration.View"
              xmlns:viewModel="clr-namespace:ComplexValidation.Configuration.ViewModel"
              xmlns:supporters="clr-namespace:ComplexValidation.Configuration.View.Supporters"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:ConfigWindowViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="1000" d:DesignWidth="900">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -77,8 +77,9 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <ContentControl>
             <HeaderedContentControl>
@@ -110,13 +111,13 @@
 
                 <local:LomoConfigDetailsControl Focusable="True"
                                                 DataContext="{Binding SelectedConfig}"
-                                        IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}" />
+                                                IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}" />
             </HeaderedContentControl>
         </ContentControl>
         <ContentControl Grid.Row="1" Grid.Column="1">
             <local:FieldDetailsControl Margin="0,40,0,0"
-                               DataContext="{Binding SelectedConfig.SelectedField}"
-                               IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}" />
+                                       DataContext="{Binding SelectedConfig.SelectedField}"
+                                       IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}" />
         </ContentControl>
         <ContentControl Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Stretch">
             <HeaderedContentControl VerticalContentAlignment="Stretch" VerticalAlignment="Stretch">
@@ -131,18 +132,28 @@
                     </UniformGrid>
                     <ListBox
                         ItemsSource="{Binding Fields}"
-                        SelectedItem="{Binding SelectedField, Mode=TwoWay}" Style="{StaticResource ErrorHighlightingListBox}">
-
-                    </ListBox>
+                        SelectedItem="{Binding SelectedField, Mode=TwoWay}"
+                        Style="{StaticResource ErrorHighlightingListBox}" />
                 </DockPanel>
             </HeaderedContentControl>
+        </ContentControl>
+        <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch">
+           <local:ZonesControl />
         </ContentControl>
         <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="0"
                 Style="{StaticResource SeparatorBorderStyle}" d:IsLocked="True" />
         <Border Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Margin="0"
                 Style="{StaticResource SeparatorBorderStyle}" d:IsLocked="True" />
         <Grid Grid.Row="2" Grid.Column="1">
-            <Button Style="{StaticResource GreenButtonStyle}" Content="Guardar cambios" Command="{Binding SaveCommand}" Margin="{StaticResource NormalVerticalThickness}" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}"
+                         Margin="-4,0,-4,0">
+                <Button Width="{StaticResource StandarButtonWidth}" Style="{StaticResource PinkButtonStyle}"
+                        Content="Cancelar" Command="{Binding DiscardCommand}"
+                        Margin="{StaticResource NormalVerticalThickness}" />
+                <Button Width="{StaticResource StandarButtonWidth}" Style="{StaticResource GreenButtonStyle}"
+                        Content="Guardar cambios" Command="{Binding SaveCommand}"
+                        Margin="{StaticResource NormalVerticalThickness}" />
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

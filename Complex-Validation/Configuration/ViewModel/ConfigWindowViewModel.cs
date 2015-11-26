@@ -19,6 +19,8 @@
         private RelayCommand duplicateCommand;
         private RelayCommand saveCommand;
         private LomoConfigViewModel selectedConfig;
+        private RelayCommand discardCommand;
+        private ObservableCollection<LomoConfigViewModel> configs;
 
         public ConfigWindowViewModel(ILomoConfigService lomoConfigService, IOpenFileService openFileService, IMessageBoxService messageBoxService)
         {
@@ -30,7 +32,37 @@
                     lomoConfigService.LomoConfigs.Select(config => ViewModelModelConverter.ConvertToViewModel(config, openFileService)));
         }
 
-        public ObservableCollection<LomoConfigViewModel> Configs { get; set; }
+        public ObservableCollection<LomoConfigViewModel> Configs
+        {
+            get { return configs; }
+            set
+            {
+                if (configs != null)
+                {
+                    foreach (var config in configs)
+                    {
+                        config.PropertyChanged -= ConfigOnPropertyChanged;
+                    }
+                }
+
+                configs = value;
+
+                if (configs != null)
+                {
+                    foreach (var config in configs)
+                    {
+                        config.PropertyChanged += ConfigOnPropertyChanged;
+                    }
+                }
+
+            }
+        }
+
+        private void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            NotifyPropertyChanged("IsDirty");
+            UpdateCommandsCanExecuteState();
+        }
 
         public LomoConfigViewModel SelectedConfig
         {
@@ -61,15 +93,7 @@
 
         public RelayCommand AddCommand
         {
-            get
-            {
-                if (addCommand == null)
-                {
-                    addCommand = new RelayCommand(Add);
-                }
-
-                return addCommand;
-            }
+            get { return addCommand ?? (addCommand = new RelayCommand(Add)); }
         }
 
         public RelayCommand DuplicateCommand
@@ -90,15 +114,13 @@
         {
             get
             {
-                return saveCommand ?? (saveCommand = new RelayCommand(Save, () => SelectedConfig != null && IsValid));
+                return saveCommand ?? (saveCommand = new RelayCommand(Save, () => IsDirty && IsValid));
             }
         }
 
         private void SelectedConfigOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            SaveCommand.RaiseCanExecuteChanged();
-            DuplicateCommand.RaiseCanExecuteChanged();
-            AddCommand.RaiseCanExecuteChanged();
+            UpdateCommandsCanExecuteState();
         }
 
         private void UpdateCommandsCanExecuteState()
@@ -106,18 +128,25 @@
             DuplicateCommand.RaiseCanExecuteChanged();
             SaveCommand.RaiseCanExecuteChanged();
             DeleteCommand.RaiseCanExecuteChanged();
+            DiscardCommand.RaiseCanExecuteChanged();
         }
 
         private void Save()
         {
-            if (SelectedConfig.Id == null)
+            foreach (var config in Configs)
             {
-                SelectedConfig.Id = AddNew(SelectedConfig);
-            }
-            else
-            {
-                Update(SelectedConfig);
-            }
+                if (!config.Id.HasValue)
+                {
+                    config.Id = AddNew(SelectedConfig);
+                }
+                else
+                {
+                    Update(config);
+                }
+            }           
+
+            NotifyPropertyChanged("IsDirty");
+            UpdateCommandsCanExecuteState();
         }
 
         private void Update(LomoConfigViewModel lomoConfigViewModel)
@@ -137,6 +166,7 @@
             var lomoConfigViewModel = new LomoConfigViewModel("Config", openFileService);
             Configs.Add(lomoConfigViewModel);
             SelectedConfig = lomoConfigViewModel;
+            NotifyPropertyChanged("IsDirty");
             UpdateCommandsCanExecuteState();
         }
 
@@ -165,6 +195,54 @@
         public override bool IsValid
         {
             get { return Configs.All(c => c.IsValid); }
+        }
+
+        public RelayCommand DiscardCommand
+        {
+            get { return discardCommand ?? (discardCommand = new RelayCommand(DiscardChanges, () => IsDirty)); }
+        }
+
+        private void DiscardChanges()
+        {
+            ResetChangesInSavedElements();
+            DeleteUnsavedElements();
+        }
+
+        private void DeleteUnsavedElements()
+        {
+            var configsToDelete = Configs.Where(model => !model.Id.HasValue).ToList();
+            foreach (var config in configsToDelete)
+            {
+                Configs.Remove(config);
+            }
+
+            foreach (var config in Configs)
+            {
+                var fieldsToDelete = config.Fields.Where(model => !model.Id.HasValue).ToList();
+                foreach (var field in fieldsToDelete)
+                {
+                    config.Fields.Remove(field);
+                }
+            }          
+        }
+
+        public bool IsDirty
+        {
+            get { return Configs.Any(c => c.IsDirty || !c.Id.HasValue); }
+        }
+
+        private void ResetChangesInSavedElements()
+        {
+            foreach (var lomoConfigViewModel in Configs.Where(config => config.Id.HasValue && config.IsDirty))
+            {
+                lomoConfigViewModel.CancelEdit();
+                lomoConfigViewModel.BeginEdit();
+                foreach (var field in lomoConfigViewModel.Fields.Where(field => field.Id.HasValue && field.IsDirty))
+                {
+                    field.CancelEdit();
+                    field.BeginEdit();
+                }
+            }
         }
     }
 }

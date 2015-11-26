@@ -3,10 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:supporters="clr-namespace:ComplexValidation.Configuration.View.Supporters"
              xmlns:viewModel="clr-namespace:ComplexValidation.Configuration.ViewModel"
-             xmlns:m="ComplexValidation.Configuration.Model"
              xmlns:model="clr-namespace:ComplexValidation.Configuration.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:FieldViewModel}"
@@ -49,8 +47,16 @@
             <supporters:TupleLayout>
                 <supporters:TupleLayout.RightSide>
                     <UniformGrid Rows="1">
-                        <CheckBox Content="Activo" IsChecked="{Binding IsActive.DataValue, Mode=TwoWay}" />
-                        <CheckBox Content="Obligatorio" IsChecked="{Binding IsRequired.DataValue, Mode=TwoWay}" />
+                        <CheckBox Content="Activo" IsChecked="{Binding IsActive.DataValue, Mode=TwoWay}">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
+                        <CheckBox Content="Obligatorio" IsChecked="{Binding IsRequired.DataValue, Mode=TwoWay}">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                            </CheckBox.LayoutTransform>
+                        </CheckBox>
                     </UniformGrid>
                 </supporters:TupleLayout.RightSide>
             </supporters:TupleLayout>
@@ -79,7 +85,6 @@
                                                 <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger.Setters>
                                         </DataTrigger>
-                                        
                                     </Style.Triggers>
                                 </Style>
                             </UniformGrid.Style>
@@ -141,12 +146,13 @@
                 </supporters:TupleLayout.RightSide>
             </supporters:TupleLayout>
         </StackPanel>
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="{Binding IsDirty}" />
+        <StackPanel Grid.Row="1" Visibility="Collapsed">
             <UniformGrid Rows="1" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}"
                          Margin="{StaticResource NormalVerticalThickness}">
                 <Button Content="Restablecer" Command="{Binding CancelEditCommand}"
-                        Style="{StaticResource PinkButtonStyle}" />
+                        Style="{StaticResource PinkButtonStyle}"
+                        Width="{StaticResource StandarButtonWidth}"
+                        />
             </UniformGrid>
         </StackPanel>
     </Grid>

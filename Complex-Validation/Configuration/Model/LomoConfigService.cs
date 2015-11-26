@@ -77,7 +77,7 @@ namespace ComplexValidation.Configuration.Model
             if (id != -1)
             {
                 LomoConfigs.RemoveAt(id);
-                LomoConfigs.Insert(id - 1, lomoConfig);
+                LomoConfigs.Insert(id, lomoConfig);
             }
         }
 

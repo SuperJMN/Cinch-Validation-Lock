@@ -179,5 +179,10 @@ namespace ComplexValidation.Configuration.ViewModel
                 return myDataIsValid && Fields.All(f => f.IsValid);
             }
         }
+
+        public override bool IsDirty
+        {
+            get { return base.IsDirty || Fields.Any(f => f.IsDirty || !f.Id.HasValue);  }
+        }
     }
 }
