@@ -1,5 +1,6 @@
 namespace ComplexValidation.Configuration.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using CinchExtended.Services.Interfaces;
@@ -14,26 +15,54 @@ namespace ComplexValidation.Configuration.Model
             this.fileOpenFileService = fileOpenFileService;
         }
 
-        public IEnumerable<LomoConfigViewModel> Configs
+        public IEnumerable<LomoConfig> Configs
         {
             get
             {
-                return new[]
+                return new Collection<LomoConfig>()
                 {
-                    new LomoConfigViewModel("Config1", fileOpenFileService) {Id = 1, Fields = GetSampleFields()},
-                    new LomoConfigViewModel("Config2", fileOpenFileService) {Id = 2, Fields = GetSampleFields()} ,
-                    new LomoConfigViewModel("Config3", fileOpenFileService) {Id = 3, Fields = GetSampleFields()}
+                    new LomoConfig
+                    {
+                        Id = 1,
+                        Name = "Configuración 1",
+                        Customer = new Customer {Id = 1, Name = "Cliente 1"},
+                        BoxCount = 10,
+                        ImagePath = "C:\\Windows",
+                        Fields = GetSampleFields(),
+                        Description = String.Empty,
+                    },
+                    new LomoConfig
+                    {
+                        Id = 2,
+                        Name = "Configuración 2",
+                        Customer = new Customer {Id = 1, Name = "Cliente 2"},
+                        BoxCount = 10,
+                        ImagePath = "C:\\Windows",
+                        Fields = GetSampleFields(),
+                        Description = String.Empty,
+                    },
+                    new LomoConfig
+                    {
+                        Id = 3,
+                        Name = "Configuración 3",
+                        Customer = new Customer {Id = 1, Name = "Cliente 3"},
+                        BoxCount = 10,
+                        ImagePath = "C:\\Windows",
+                        Fields = GetSampleFields(),
+                        Description = String.Empty,
+                    },
+
                 };
             }
         }
 
-        public ObservableCollection<FieldViewModel> GetSampleFields()
+        private static IEnumerable<Field> GetSampleFields()
         {
-            return new ObservableCollection<FieldViewModel>
+            return new Collection<Field>
             {
-                new FieldViewModel("Field1") { Id = 1},
-                new FieldViewModel("Field2") { Id = 2},
-                new FieldViewModel("Field3") { Id = 3},
+                new Field { Id = 1, Name = "Campo 1"},
+                new Field { Id = 2, Name = "Campo 2"},
+                new Field { Id = 3, Name = "Campo 3"},
             };
         }
     }

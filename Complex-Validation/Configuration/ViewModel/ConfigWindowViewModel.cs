@@ -52,6 +52,7 @@
                     foreach (var config in configs)
                     {
                         config.PropertyChanged += ConfigOnPropertyChanged;
+                        config.BeginEdit();
                     }
                 }
 
@@ -69,25 +70,8 @@
             get { return selectedConfig; }
             set
             {
-                if (selectedConfig != null)
-                {
-                    selectedConfig.PropertyChanged -= SelectedConfigOnPropertyChanged;
-                }
-
                 selectedConfig = value;
-
-                if (selectedConfig != null)
-                {
-                    if (!selectedConfig.IsDirty)
-                    {
-                        selectedConfig.BeginEdit();
-                    }
-
-                    selectedConfig.PropertyChanged += SelectedConfigOnPropertyChanged;
-                }
-
-                NotifyPropertyChanged("SelectedConfig");
-                UpdateCommandsCanExecuteState();
+                NotifyPropertyChanged("SelectedConfig");                
             }
         }
 
@@ -118,11 +102,6 @@
             }
         }
 
-        private void SelectedConfigOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            UpdateCommandsCanExecuteState();
-        }
-
         private void UpdateCommandsCanExecuteState()
         {
             DuplicateCommand.RaiseCanExecuteChanged();
@@ -133,6 +112,8 @@
 
         private void Save()
         {
+            EndEdit();
+
             foreach (var config in Configs)
             {
                 if (!config.Id.HasValue)
@@ -144,6 +125,8 @@
                     Update(config);
                 }
             }           
+
+            BeginEdit();
 
             NotifyPropertyChanged("IsDirty");
             UpdateCommandsCanExecuteState();
@@ -229,6 +212,22 @@
         public bool IsDirty
         {
             get { return Configs.Any(c => c.IsDirty || !c.Id.HasValue); }
+        }
+
+        protected override void OnEndEdit()
+        {
+            foreach (var config in Configs)
+            {
+                config.EndEdit();
+            }
+        }
+
+        protected override void OnBeginEdit()
+        {
+            foreach (var config in Configs)
+            {
+                config.BeginEdit();
+            }
         }
 
         private void ResetChangesInSavedElements()

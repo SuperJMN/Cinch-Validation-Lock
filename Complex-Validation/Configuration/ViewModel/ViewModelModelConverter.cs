@@ -1,5 +1,6 @@
 namespace ComplexValidation.Configuration.ViewModel
 {
+    using System;
     using CinchExtended.Services.Interfaces;
     using Model;
 
@@ -10,17 +11,22 @@ namespace ComplexValidation.Configuration.ViewModel
             var viewModel = new LomoConfigViewModel(lomoConfig.Name, openFileService)
             {
                 Id = lomoConfig.Id,
-                BoxCount = {DataValue = lomoConfig.BoxCount},
-                SelectedCustomer = {DataValue = ConvertToViewModel(lomoConfig.Customer)},
-                Description = {DataValue = lomoConfig.Description},
-                ImagePath = {DataValue = lomoConfig.ImagePath}
+                BoxCount = { DataValue = lomoConfig.BoxCount },
+                SelectedCustomer = { DataValue = lomoConfig.Customer != null ? ConvertToViewModel(lomoConfig.Customer) : null },
+                Description = { DataValue = lomoConfig.Description },
+                ImagePath = { DataValue = lomoConfig.ImagePath }
             };
 
             return viewModel;
         }
 
         private static CustomerViewModel ConvertToViewModel(Customer lomoConfigViewModel)
-        {            
+        {
+            if (lomoConfigViewModel == null)
+            {
+                throw new ArgumentNullException("lomoConfigViewModel");
+            }
+
             return new CustomerViewModel
             {
                 Id = lomoConfigViewModel.Id,

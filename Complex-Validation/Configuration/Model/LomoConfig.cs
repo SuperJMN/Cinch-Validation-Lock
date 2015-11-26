@@ -11,5 +11,28 @@
         public int BoxCount { get; set; }
         public Customer Customer { get; set; }
         public IEnumerable<Field> Fields { get; set; }
+
+        protected bool Equals(LomoConfig other)
+        {
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            return obj.GetType() == GetType() && Equals((LomoConfig) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }

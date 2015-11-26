@@ -91,7 +91,7 @@
     </ApplicationDefinition>
     <Compile Include="Configuration\Model\Customer.cs" />
     <Compile Include="Configuration\Model\Field.cs" />
-    <Compile Include="Configuration\Model\LomoConfigService.cs" />
+    <Compile Include="Configuration\Model\InMemoryLomoConfigService.cs" />
     <Compile Include="Configuration\ViewModel\CustomerViewModel.cs" />
     <Compile Include="Configuration\Model\FieldType.cs" />
     <Compile Include="Configuration\ViewModel\FullyFledgedViewModel.cs" />
