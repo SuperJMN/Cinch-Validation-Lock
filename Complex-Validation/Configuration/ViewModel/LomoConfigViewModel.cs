@@ -25,6 +25,7 @@ namespace ComplexValidation.Configuration.ViewModel
 
         private const string Required = "Requerido";
         private const string InvalidBoxCount = "Número de cajas no válido";
+        private const string CannotBeNull = "Requerido";
 
         private LomoConfigViewModel(LomoConfigViewModel lomoConfigViewModel)
         {
@@ -63,6 +64,7 @@ namespace ComplexValidation.Configuration.ViewModel
             BoxCount = new DataWrapper<int>(this, new PropertyChangedEventArgs("BoxCount")) { DataValue = 1 };
             BoxCount.AddRule(DataWrapperRules.NumberBetween(1, 100, InvalidBoxCount));
             SelectedCustomer = new DataWrapper<CustomerViewModel>(this, new PropertyChangedEventArgs("SelectedCustomer"));
+            SelectedCustomer.AddRule(DataWrapperRules.CannotBeNull<CustomerViewModel>(CannotBeNull));
 
             SubscribeToChangesInAllDataWrappers();
         }

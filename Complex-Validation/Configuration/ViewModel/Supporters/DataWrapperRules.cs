@@ -15,19 +15,24 @@ namespace ComplexValidation.Configuration.ViewModel.Supporters
             return new SimpleRule("DataValue", message, dw => !DataWrapperValidationExpressions.NumberBetween(dw, min, max));
         }
 
-        public static Rule MinMax(object min, object max, string message)
+        public static Rule MinMax(DataWrapper<int?> min, DataWrapper<int?> max, string message)
         {
             return new SimpleRule("DataValue", message, dw =>
             {
-                var minValue = ExtractValue<int?>(min);
-                var maxValue = ExtractValue<int?>(max);
+                var minValue = ExtractValue(min);
+                var maxValue = ExtractValue(max);
                 return !DataWrapperValidationExpressions.MinimumMaximum(minValue, maxValue);
             });
         }
 
-        private static T ExtractValue<T>(object dw)
+        private static T ExtractValue<T>(DataWrapper<T> dw)
         {
-            return ((DataWrapper<T>) dw).DataValue;
+            return dw.DataValue;
+        }
+
+        public static Rule CannotBeNull<T>(string message)
+        {
+            return new SimpleRule("DataValue", message, o => ExtractValue((DataWrapper<T>) o) == null);
         }
     }
 }
