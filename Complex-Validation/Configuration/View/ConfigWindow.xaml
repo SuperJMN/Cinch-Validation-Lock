@@ -11,7 +11,9 @@
         d:DataContext="{d:DesignInstance viewModel:ConfigWindowViewModel}">
 
     <!--Width="1266" Height="732"-->
-    <view:LomoConfigControl />
+    <Viewbox>
+        <view:LomoConfigControl  Width="1266" Height="732"/>
+    </Viewbox>
 
 
 </Window>

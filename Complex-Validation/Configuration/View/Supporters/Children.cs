@@ -52,10 +52,6 @@
                 {
                     fe.Margin = GetMargin(panel);
                 }
-                else
-                {
-                    
-                }
             }
         }
     }

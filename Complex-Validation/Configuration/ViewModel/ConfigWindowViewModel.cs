@@ -4,6 +4,7 @@
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
+    using System.Windows;
     using CinchExtended.Services.Interfaces;
     using CinchExtended.ViewModels;
     using GalaSoft.MvvmLight.Command;
@@ -15,12 +16,13 @@
         private readonly IMessageBoxService messageBoxService;
         private readonly IOpenFileService openFileService;
         private RelayCommand addCommand;
+        private ObservableCollection<LomoConfigViewModel> configs;
         private RelayCommand deleteCommand;
+        private RelayCommand discardCommand;
         private RelayCommand duplicateCommand;
+        private RelayCommand exitCommand;
         private RelayCommand saveCommand;
         private LomoConfigViewModel selectedConfig;
-        private RelayCommand discardCommand;
-        private ObservableCollection<LomoConfigViewModel> configs;
 
         public ConfigWindowViewModel(ILomoConfigService lomoConfigService, IOpenFileService openFileService, IMessageBoxService messageBoxService)
         {
@@ -54,26 +56,7 @@
                         Hook(config);
                     }
                 }
-
             }
-        }
-
-        private void Hook(LomoConfigViewModel config)
-        {
-            config.PropertyChanged += ConfigOnPropertyChanged;
-            config.BeginEdit();
-        }
-
-        private void Unhook(LomoConfigViewModel config)
-        {
-            config.PropertyChanged -= ConfigOnPropertyChanged;
-        }
-
-        private void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            NotifyPropertyChanged("IsDirty");
-            NotifyPropertyChanged("IsValid");
-            UpdateCommandsCanExecuteState();
         }
 
         public LomoConfigViewModel SelectedConfig
@@ -82,7 +65,7 @@
             set
             {
                 selectedConfig = value;
-                NotifyPropertyChanged("SelectedConfig");                
+                NotifyPropertyChanged("SelectedConfig");
             }
         }
 
@@ -107,10 +90,45 @@
 
         public RelayCommand SaveCommand
         {
-            get
-            {
-                return saveCommand ?? (saveCommand = new RelayCommand(Save, () => IsDirty && IsValid));
-            }
+            get { return saveCommand ?? (saveCommand = new RelayCommand(Save, () => IsDirty && IsValid)); }
+        }
+
+        public override bool IsValid
+        {
+            get { return Configs.All(c => c.IsValid); }
+        }
+
+        public RelayCommand DiscardCommand
+        {
+            get { return discardCommand ?? (discardCommand = new RelayCommand(DiscardChanges, () => IsDirty)); }
+        }
+
+        public bool IsDirty
+        {
+            get { return Configs.Any(c => c.IsDirty || !c.Id.HasValue); }
+        }
+
+        public RelayCommand ExitCommand
+        {
+            get { return exitCommand ?? (exitCommand = new RelayCommand(() => Application.Current.Shutdown())); }
+        }
+
+        private void Hook(EditableValidatingViewModelBase config)
+        {
+            config.PropertyChanged += ConfigOnPropertyChanged;
+            config.BeginEdit();
+        }
+
+        private void Unhook(INotifyPropertyChanged config)
+        {
+            config.PropertyChanged -= ConfigOnPropertyChanged;
+        }
+
+        private void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            NotifyPropertyChanged("IsDirty");
+            NotifyPropertyChanged("IsValid");
+            UpdateCommandsCanExecuteState();
         }
 
         private void UpdateCommandsCanExecuteState()
@@ -129,13 +147,13 @@
             {
                 if (!config.Id.HasValue)
                 {
-                    config.Id = AddNew(SelectedConfig);
+                    config.Id = SaveNew(SelectedConfig);
                 }
                 else
                 {
                     Update(config);
                 }
-            }           
+            }
 
             BeginEdit();
 
@@ -149,7 +167,7 @@
             lomoConfigService.Update(lomoConfig);
         }
 
-        private int AddNew(LomoConfigViewModel lomoConfigViewModel)
+        private int SaveNew(LomoConfigViewModel lomoConfigViewModel)
         {
             var lomoConfig = ModelConverter.ConvertToModel(lomoConfigViewModel);
             return lomoConfigService.Add(lomoConfig);
@@ -157,12 +175,37 @@
 
         private void Add()
         {
-            var lomoConfigViewModel = new LomoConfigViewModel("Config", openFileService);
+            var lomoConfigViewModel = new LomoConfigViewModel(GenerateNewName(), openFileService);
             Hook(lomoConfigViewModel);
             Configs.Add(lomoConfigViewModel);
             SelectedConfig = lomoConfigViewModel;
             NotifyPropertyChanged("IsDirty");
             UpdateCommandsCanExecuteState();
+        }
+
+        private string GenerateNewName()
+        {
+            var offset = 1;
+            bool isTaken;
+            string name;
+            do
+            {
+                var id = Configs
+                    .Where(lc => lc.Id.HasValue)
+                    .Select(config => config.Id.Value)
+                    .DefaultIfEmpty(0)
+                    .Max(lc => lc) + offset;
+
+                name = string.Format("Configuratión {0}", id);
+                isTaken = Configs.Any(model => string.Equals(model.Name.DataValue, name));
+
+                if (isTaken)
+                {
+                    offset++;
+                }
+            } while (isTaken);
+
+            return name;
         }
 
         private void Delete()
@@ -184,17 +227,7 @@
 
         private void Duplicate()
         {
-            Configs.Add((LomoConfigViewModel)SelectedConfig.Clone());
-        }
-
-        public override bool IsValid
-        {
-            get { return Configs.All(c => c.IsValid); }
-        }
-
-        public RelayCommand DiscardCommand
-        {
-            get { return discardCommand ?? (discardCommand = new RelayCommand(DiscardChanges, () => IsDirty)); }
+            Configs.Add((LomoConfigViewModel) SelectedConfig.Clone());
         }
 
         private void DiscardChanges()
@@ -218,12 +251,7 @@
                 {
                     config.Fields.Remove(field);
                 }
-            }          
-        }
-
-        public bool IsDirty
-        {
-            get { return Configs.Any(c => c.IsDirty || !c.Id.HasValue); }
+            }
         }
 
         protected override void OnEndEdit()

@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ComplexValidation.Configuration.View"
              xmlns:viewModel="clr-namespace:ComplexValidation.Configuration.ViewModel"
-             xmlns:supporters="clr-namespace:ComplexValidation.Configuration.View.Supporters"
+             xmlns:s="clr-namespace:ComplexValidation.Configuration.View.Supporters"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:ConfigWindowViewModel}"
-             d:DesignHeight="1000" d:DesignWidth="900">
+             d:DesignHeight="974.576" d:DesignWidth="1459.322">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,7 +23,7 @@
                 <TextBlock Text="{Binding Name.DataValue}" />
             </DataTemplate>
 
-            <supporters:NullToFalseConverter x:Key="NullToFalseConverter" />
+            <s:NullToFalseConverter x:Key="NullToFalseConverter" />
 
             <Style TargetType="{x:Type ContentControl}">
                 <Setter Property="Margin" Value="10" />
@@ -78,8 +78,8 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="4*" />
             <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <ContentControl>
             <HeaderedContentControl>
@@ -88,7 +88,7 @@
                 </HeaderedContentControl.Header>
                 <DockPanel>
                     <Grid Margin="{StaticResource NormalVerticalThickness}" DockPanel.Dock="Bottom">
-                        <UniformGrid Rows="1" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}"
+                        <UniformGrid Rows="1" s:Children.Margin="{StaticResource SmallHorizontalThickness}"
                                      Margin="-4,0,-4,0">
                             <Button Content="Añadir" Command="{Binding AddCommand}"
                                     Style="{StaticResource GreenButtonStyle}" />
@@ -146,16 +146,22 @@
                 Style="{StaticResource SeparatorBorderStyle}" d:IsLocked="True" />
         <Border Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Margin="0"
                 Style="{StaticResource SeparatorBorderStyle}" d:IsLocked="True" />
-        <Grid Grid.Row="2" Grid.Column="1" Margin="{StaticResource NormalVerticalThickness}">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}"
-                         Margin="-4,0,-4,0">
-                <Button Width="{StaticResource StandarButtonWidth}" Style="{StaticResource PinkButtonStyle}"
-                        Content="Cancelar" Command="{Binding DiscardCommand}"
-                        Margin="{StaticResource NormalVerticalThickness}" />
-                <Button Width="{StaticResource StandarButtonWidth}" Style="{StaticResource GreenButtonStyle}"
-                        Content="Guardar cambios" Command="{Binding SaveCommand}"
-                        Margin="{StaticResource NormalVerticalThickness}" />
-            </StackPanel>
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="{StaticResource NormalVerticalThickness}">
+            <Grid HorizontalAlignment="Stretch" 
+                        s:Children.Margin="{StaticResource SmallHorizontalThickness}"
+                        Margin="10,0,-4,0">
+                <Button Width="{StaticResource StandarButtonWidth}" Style="{StaticResource BlueButtonStyle}"
+                        Content="Salir" Command="{Binding ExitCommand}"
+                        Margin="{StaticResource NormalVerticalThickness}" HorizontalAlignment="Left"  />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" s:Children.Margin="{StaticResource SmallHorizontalThickness}">
+                    <Button Width="{StaticResource StandarButtonWidth}" Style="{StaticResource PinkButtonStyle}"
+                            Content="Cancelar" Command="{Binding DiscardCommand}"
+                            Margin="{StaticResource NormalVerticalThickness}" />
+                    <Button Width="{StaticResource StandarButtonWidth}" Style="{StaticResource GreenButtonStyle}"
+                            HorizontalAlignment="Right"
+                            Content="Guardar cambios" Command="{Binding SaveCommand}"
+                            Margin="{StaticResource NormalVerticalThickness}" /></StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
