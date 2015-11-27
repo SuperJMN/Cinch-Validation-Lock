@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24627.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Complex-Validation", "Complex-Validation\Complex-Validation.csproj", "{3BA363BA-246F-4FD3-9BAF-267ABA52C545}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movidas", "Movidas\Movidas.csproj", "{EF7642A0-3086-4EEA-A785-714527A92904}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComplexValidation.Tests", "Movidas\ComplexValidation.Tests.csproj", "{EF7642A0-3086-4EEA-A785-714527A92904}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

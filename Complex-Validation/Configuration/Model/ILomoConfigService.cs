@@ -8,5 +8,6 @@ namespace ComplexValidation.Configuration.Model
         int Add(LomoConfig lomoConfig);
         void Update(LomoConfig lomoConfig);
         void Delete(int lomoConfigId);
+        LomoConfig Get(int id);
     }
 }
