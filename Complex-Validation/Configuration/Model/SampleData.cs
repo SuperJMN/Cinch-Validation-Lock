@@ -1,21 +1,11 @@
 namespace ComplexValidation.Configuration.Model
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using CinchExtended.Services.Interfaces;
-    using ViewModel;
 
-    public class SampleData
-    {
-        private readonly IOpenFileService fileOpenFileService;
-
-        public SampleData(IOpenFileService fileOpenFileService)
-        {
-            this.fileOpenFileService = fileOpenFileService;
-        }
-
-        public IEnumerable<LomoConfig> Configs
+    public static class SampleData
+    {       
+        public static IEnumerable<LomoConfig> Configs
         {
             get
             {
@@ -29,7 +19,7 @@ namespace ComplexValidation.Configuration.Model
                         BoxCount = 10,
                         ImagePath = "C:\\Windows",
                         Fields = GetSampleFields(),
-                        Description = String.Empty,
+                        Description = string.Empty,
                     },
                     new LomoConfig
                     {
@@ -39,7 +29,7 @@ namespace ComplexValidation.Configuration.Model
                         BoxCount = 10,
                         ImagePath = "C:\\Windows",
                         Fields = GetSampleFields(),
-                        Description = String.Empty,
+                        Description = string.Empty,
                     },
                     new LomoConfig
                     {
@@ -49,7 +39,7 @@ namespace ComplexValidation.Configuration.Model
                         BoxCount = 10,
                         ImagePath = "C:\\Windows",
                         Fields = GetSampleFields(),
-                        Description = String.Empty,
+                        Description = string.Empty,
                     },
 
                 };

@@ -15,7 +15,7 @@
         {
             base.OnStartup(e);
 
-            var viewModel = new ConfigWindowViewModel(new InMemoryLomoConfigService(), new WpfOpenFileService(), new WpfMessageBoxService());
+            var viewModel = new ConfigWindowViewModel(new InMemoryLomoConfigService(SampleData.Configs), new WpfOpenFileService(), new WpfMessageBoxService());
             var configWindow = new ConfigWindow { DataContext = viewModel };
             configWindow.Show();
         }        
