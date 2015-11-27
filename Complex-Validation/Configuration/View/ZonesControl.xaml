@@ -7,7 +7,7 @@
              xmlns:viewModel="clr-namespace:ComplexValidation.Configuration.ViewModel"
              xmlns:supporters="clr-namespace:ComplexValidation.Configuration.View.Supporters"
              mc:Ignorable="d" 
-             d:DesignHeight="313" d:DesignWidth="379">
+             d:DesignHeight="2000" d:DesignWidth="388">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,12 +20,11 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.83*"/>
-            <RowDefinition Height="0.02*"/>
-            <RowDefinition Height="0.15*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="{StaticResource WhiteColor}" Margin="10,0,10,0">
+        <Border Grid.Row="0" Background="{StaticResource WhiteColor}" Margin="{StaticResource NormalVerticalThickness}">
             <!--<UserControls:SpineViewerControl x:Name="ViewerControlSpinePage" HorizontalAlignment="Right" />-->
         </Border>
 
@@ -33,7 +32,7 @@
             <Button Content="Seleccionar área"  
                     Style="{StaticResource GreenButtonStyle}" Template="{StaticResource BlueButtonTemplate}"/>
 
-            <Button Content="Ver a pantalla completa"  
+            <Button Content="Pantalla completa"  
                     Style="{StaticResource GreenButtonStyle}" Template="{StaticResource BlueButtonTemplate}"/>
         </UniformGrid>
     </Grid>

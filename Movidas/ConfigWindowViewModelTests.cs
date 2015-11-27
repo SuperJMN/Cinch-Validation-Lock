@@ -1,7 +1,7 @@
 namespace ComplexValidation.Tests
 {
     using System.Linq;
-    using ComplexValidation.Configuration.ViewModel;
+    using Configuration.ViewModel;
     using Xunit;
 
     public class ConfigWindowViewModelTests
@@ -74,6 +74,34 @@ namespace ComplexValidation.Tests
             sut.DiscardCommand.Execute(null);
 
             Assert.Empty(sut.Configs);
+        }
+
+        [Fact]
+        public void AfterAddingNewInvalidConfig_SaveIsDisabled()
+        {
+            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(), null, null);
+            sut.AddCommand.Execute(null);
+
+            Assert.False(sut.SaveCommand.CanExecute(null));
+        }
+
+        [Fact]
+        public void AfterAddingValidConfig_SaveIsEnabled()
+        {
+            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(), null, null);
+            sut.AddCommand.Execute(null);
+            var createdConfig = sut.Configs.First();
+            FillWithValidData(createdConfig);
+
+            Assert.True(sut.SaveCommand.CanExecute(null));
+        }
+
+        private void FillWithValidData(LomoConfigViewModel createdConfig)
+        {
+            createdConfig.BoxCount.DataValue = 1;
+            createdConfig.ImagePath.DataValue = "SomePath";
+            createdConfig.Name.DataValue = "SomeName";
+            createdConfig.SelectedCustomer.DataValue = new CustomerViewModel { Id = 1, Name = "SomeCustomer" };
         }
 
         private static ConfigWindowViewModel ModifiedSut()

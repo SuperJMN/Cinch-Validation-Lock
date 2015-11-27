@@ -41,7 +41,7 @@
                 {
                     foreach (var config in configs)
                     {
-                        config.PropertyChanged -= ConfigOnPropertyChanged;
+                        Unhook(config);
                     }
                 }
 
@@ -51,17 +51,28 @@
                 {
                     foreach (var config in configs)
                     {
-                        config.PropertyChanged += ConfigOnPropertyChanged;
-                        config.BeginEdit();
+                        Hook(config);
                     }
                 }
 
             }
         }
 
+        private void Hook(LomoConfigViewModel config)
+        {
+            config.PropertyChanged += ConfigOnPropertyChanged;
+            config.BeginEdit();
+        }
+
+        private void Unhook(LomoConfigViewModel config)
+        {
+            config.PropertyChanged -= ConfigOnPropertyChanged;
+        }
+
         private void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             NotifyPropertyChanged("IsDirty");
+            NotifyPropertyChanged("IsValid");
             UpdateCommandsCanExecuteState();
         }
 
@@ -147,6 +158,7 @@
         private void Add()
         {
             var lomoConfigViewModel = new LomoConfigViewModel("Config", openFileService);
+            Hook(lomoConfigViewModel);
             Configs.Add(lomoConfigViewModel);
             SelectedConfig = lomoConfigViewModel;
             NotifyPropertyChanged("IsDirty");

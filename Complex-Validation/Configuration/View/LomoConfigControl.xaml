@@ -72,8 +72,8 @@
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="282*" />
-            <RowDefinition Height="487*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -138,13 +138,15 @@
             </HeaderedContentControl>
         </ContentControl>
         <ContentControl Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" VerticalContentAlignment="Stretch">
-           <local:ZonesControl />
+            <Border BorderThickness="2,0,0,0" BorderBrush="Gainsboro" Margin="4,0,5,0">
+                <local:ZonesControl Margin="8,0,0,0" />
+            </Border>
         </ContentControl>
         <Border Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Margin="0"
                 Style="{StaticResource SeparatorBorderStyle}" d:IsLocked="True" />
         <Border Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Margin="0"
                 Style="{StaticResource SeparatorBorderStyle}" d:IsLocked="True" />
-        <Grid Grid.Row="2" Grid.Column="1">
+        <Grid Grid.Row="2" Grid.Column="1" Margin="{StaticResource NormalVerticalThickness}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}"
                          Margin="-4,0,-4,0">
                 <Button Width="{StaticResource StandarButtonWidth}" Style="{StaticResource PinkButtonStyle}"

@@ -7,6 +7,10 @@
     {
         private readonly IEnumerable<LomoConfig> lomoConfigs;
 
+        public LomoConfigServiceMock() : this(new List<LomoConfig>())
+        {            
+        }
+
         public LomoConfigServiceMock(IEnumerable<LomoConfig> lomoConfigs)
         {
             this.lomoConfigs = lomoConfigs;
