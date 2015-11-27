@@ -6,7 +6,7 @@
     {
         [Description("Global")]
         Global,
-        [Description("Númérico")]
+        [Description("Numérico")]
         Numeric,
         [Description("Alfabético")]
         Alphabetic,
@@ -16,11 +16,17 @@
         Omr,
         [Description("Barcode")]
         Barcode,
+        [Description("Ean13")]
         Ean13,
+        [Description("Ean8")]
         Ean8,
+        [Description("Code39")]
         Code39,
+        [Description("Code128")]
         Code128,
+        [Description("Code2Of5")]
         Code2Of5,
+        [Description("General Barcode")]
         GeneralBarcode,
     }
 }

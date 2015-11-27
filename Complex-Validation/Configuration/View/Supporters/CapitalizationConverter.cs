@@ -4,13 +4,15 @@ namespace ComplexValidation.Configuration.View.Supporters
     using System.Globalization;
     using System.Windows.Data;
 
-    public class EmptyToNullConverter : IValueConverter
+    [ValueConversion(typeof(string), typeof(string))]
+    public class CapitalizationConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (string.IsNullOrEmpty((string) value))
+            var str = value as string;
+            if (str != null)
             {
-                return null;
+                return str.ToUpperInvariant();
             }
 
             return value;
@@ -18,7 +20,7 @@ namespace ComplexValidation.Configuration.View.Supporters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value;
+            throw new NotSupportedException();
         }
     }
 }

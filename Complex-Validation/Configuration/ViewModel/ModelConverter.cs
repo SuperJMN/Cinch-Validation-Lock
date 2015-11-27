@@ -9,7 +9,7 @@ namespace ComplexValidation.Configuration.ViewModel
             var converted = new LomoConfig
             {
                 Id = lomoConfigViewModel.Id,
-                BoxCount = lomoConfigViewModel.BoxCount.DataValue,
+                BoxCount = lomoConfigViewModel.BoxCount.DataValue.Value,
                 Customer = ConvertToModel(lomoConfigViewModel.SelectedCustomer.DataValue),
                 Description = lomoConfigViewModel.Description.DataValue,
                 ImagePath = lomoConfigViewModel.ImagePath.DataValue,

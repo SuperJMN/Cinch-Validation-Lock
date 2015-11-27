@@ -102,6 +102,8 @@
       <DependentUpon>LomoConfigControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Configuration\View\Supporters\Children.cs" />
+    <Compile Include="Configuration\View\Supporters\EnumDescriptionConverter.cs" />
+    <Compile Include="Configuration\View\Supporters\ValueConverterGroup.cs" />
     <Compile Include="Configuration\View\Supporters\VisualTreeUtils.cs" />
     <Compile Include="Configuration\ViewModel\Supporters\DataWrapperRules.cs" />
     <Compile Include="Configuration\ViewModel\Supporters\DataWrapperValidationExpressions.cs" />
@@ -155,7 +157,7 @@
     <Compile Include="Configuration\View\LomoConfigDetailsControl.cs">
       <DependentUpon>LomoConfigDetailsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\View\Supporters\EmptyToNullConverter.cs" />
+    <Compile Include="Configuration\View\Supporters\CapitalizationConverter.cs" />
     <Compile Include="Configuration\View\ZonesControl.xaml.cs">
       <DependentUpon>ZonesControl.xaml</DependentUpon>
     </Compile>

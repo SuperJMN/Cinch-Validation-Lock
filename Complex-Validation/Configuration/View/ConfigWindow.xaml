@@ -7,13 +7,12 @@
         xmlns:view="clr-namespace:ComplexValidation.Configuration.View"
         mc:Ignorable="d"
         Title="ConfigWindow" Height="800.33" Width="900.124"
+        WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance viewModel:ConfigWindowViewModel}">
 
     <!--Width="1266" Height="732"-->
-    <Viewbox>
-        <view:LomoConfigControl  Width="1266" Height="732"/>
-    </Viewbox>
+    <view:LomoConfigControl />
 
 
 </Window>

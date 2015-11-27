@@ -62,6 +62,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <s:NegateBoolConverter x:Key="NegateBoolConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Margin="10">
@@ -77,12 +78,12 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="4*" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <ContentControl>
-            <HeaderedContentControl>
+            <HeaderedContentControl IsEnabled="{Binding IsDirty, Converter={StaticResource NegateBoolConverter}}">
                 <HeaderedContentControl.Header>
                     <TextBlock Text="Tipo de lomo" Style="{StaticResource HeaderStyle}" />
                 </HeaderedContentControl.Header>
@@ -127,7 +128,7 @@
                 <DockPanel DataContext="{Binding SelectedConfig}"
                            IsEnabled="{Binding Converter={StaticResource NullToFalseConverter}}">
                     <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="{StaticResource NormalVerticalThickness}">
-                        <Button Content="Añadir" Command="{Binding AddFieldCommand}"
+                        <Button Content="Añadir" Command="{Binding AddFieldCommand}" Width="{StaticResource StandarButtonWidth}" HorizontalAlignment="Left"
                                 Style="{StaticResource GreenButtonStyle}" />
                     </UniformGrid>
                     <ListBox

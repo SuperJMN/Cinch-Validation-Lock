@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:supporters="clr-namespace:ComplexValidation.Configuration.View.Supporters"
+             xmlns:s="clr-namespace:ComplexValidation.Configuration.View.Supporters"
              xmlns:viewModel="clr-namespace:ComplexValidation.Configuration.ViewModel"
              xmlns:model="clr-namespace:ComplexValidation.Configuration.Model"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:FieldViewModel}"
              Grid.IsSharedSizeScope="True"
@@ -15,6 +16,23 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ComplexValidation;component/Themes/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <ObjectDataProvider MethodName="GetValues"
+                ObjectType="{x:Type sys:Enum}" x:Key="FieldTypes">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="model:FieldType" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            
+            <s:ValueConverterGroup x:Key="EnumValueCapitalizeConverter">
+                <s:ValueConverterGroup.Converters>
+                    <s:EnumDescriptionConverter />
+                    <s:CapitalizationConverter />
+                </s:ValueConverterGroup.Converters>
+            </s:ValueConverterGroup>
+            
+            
+
         </ResourceDictionary>
     </UserControl.Resources>
     <!--<i:Interaction.Behaviors>
@@ -26,26 +44,26 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel>
-            <supporters:TupleLayout>
-                <supporters:TupleLayout.LeftSide>
+            <s:TupleLayout>
+                <s:TupleLayout.LeftSide>
                     <TextBlock Text="Nombre" />
-                </supporters:TupleLayout.LeftSide>
-                <supporters:TupleLayout.RightSide>
+                </s:TupleLayout.LeftSide>
+                <s:TupleLayout.RightSide>
                     <TextBox
                         Text="{Binding Name.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-                </supporters:TupleLayout.RightSide>
-            </supporters:TupleLayout>
-            <supporters:TupleLayout>
-                <supporters:TupleLayout.LeftSide>
+                </s:TupleLayout.RightSide>
+            </s:TupleLayout>
+            <s:TupleLayout>
+                <s:TupleLayout.LeftSide>
                     <TextBlock Text="Descripción" />
-                </supporters:TupleLayout.LeftSide>
-                <supporters:TupleLayout.RightSide>
+                </s:TupleLayout.LeftSide>
+                <s:TupleLayout.RightSide>
                     <TextBox
                         Text="{Binding Description.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-                </supporters:TupleLayout.RightSide>
-            </supporters:TupleLayout>
-            <supporters:TupleLayout>
-                <supporters:TupleLayout.RightSide>
+                </s:TupleLayout.RightSide>
+            </s:TupleLayout>
+            <s:TupleLayout>
+                <s:TupleLayout.RightSide>
                     <UniformGrid Rows="1">
                         <CheckBox Content="Activo" IsChecked="{Binding IsActive.DataValue, Mode=TwoWay}">
                             <CheckBox.LayoutTransform>
@@ -58,20 +76,27 @@
                             </CheckBox.LayoutTransform>
                         </CheckBox>
                     </UniformGrid>
-                </supporters:TupleLayout.RightSide>
-            </supporters:TupleLayout>
-            <supporters:TupleLayout>
-                <supporters:TupleLayout.LeftSide>
+                </s:TupleLayout.RightSide>
+            </s:TupleLayout>
+            <s:TupleLayout>
+                <s:TupleLayout.LeftSide>
                     <TextBlock Text="Tipo de campo" />
-                </supporters:TupleLayout.LeftSide>
-                <supporters:TupleLayout.RightSide>
+                </s:TupleLayout.LeftSide>
+                <s:TupleLayout.RightSide>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <ComboBox ItemsSource="{Binding FieldTypes}"
-                                  SelectedValue="{Binding SelectedFieldType.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
+                        <ComboBox ItemsSource="{Binding Source={StaticResource FieldTypes}}"
+                                  SelectedValue="{Binding SelectedFieldType.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumValueCapitalizeConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
                         <UniformGrid Rows="1" Grid.Column="1" Margin="5,0,0,0">
                             <UniformGrid.Style>
                                 <Style TargetType="FrameworkElement">
@@ -101,13 +126,13 @@
                             </DockPanel>
                         </UniformGrid>
                     </Grid>
-                </supporters:TupleLayout.RightSide>
-            </supporters:TupleLayout>
-            <supporters:TupleLayout>
-                <supporters:TupleLayout.LeftSide>
+                </s:TupleLayout.RightSide>
+            </s:TupleLayout>
+            <s:TupleLayout>
+                <s:TupleLayout.LeftSide>
                     <TextBlock Text="Máscara" />
-                </supporters:TupleLayout.LeftSide>
-                <supporters:TupleLayout.RightSide>
+                </s:TupleLayout.LeftSide>
+                <s:TupleLayout.RightSide>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -117,37 +142,37 @@
                             Text="{Binding Mask.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
 
                     </Grid>
-                </supporters:TupleLayout.RightSide>
-            </supporters:TupleLayout>
-            <supporters:TupleLayout>
-                <supporters:TupleLayout.LeftSide>
+                </s:TupleLayout.RightSide>
+            </s:TupleLayout>
+            <s:TupleLayout>
+                <s:TupleLayout.LeftSide>
                     <TextBlock Text="Valor fijo" />
-                </supporters:TupleLayout.LeftSide>
-                <supporters:TupleLayout.RightSide>
+                </s:TupleLayout.LeftSide>
+                <s:TupleLayout.RightSide>
                     <TextBox
                         Text="{Binding FixedValue.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-                </supporters:TupleLayout.RightSide>
-            </supporters:TupleLayout>
-            <supporters:TupleLayout>
-                <supporters:TupleLayout.LeftSide>
+                </s:TupleLayout.RightSide>
+            </s:TupleLayout>
+            <s:TupleLayout>
+                <s:TupleLayout.LeftSide>
                     <TextBlock Text="Carac. Válidos" />
-                </supporters:TupleLayout.LeftSide>
-                <supporters:TupleLayout.RightSide>
+                </s:TupleLayout.LeftSide>
+                <s:TupleLayout.RightSide>
                     <TextBox
                         Text="{Binding ValidChars.DataValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" />
-                </supporters:TupleLayout.RightSide>
-            </supporters:TupleLayout>
-            <supporters:TupleLayout>
-                <supporters:TupleLayout.LeftSide>
+                </s:TupleLayout.RightSide>
+            </s:TupleLayout>
+            <s:TupleLayout>
+                <s:TupleLayout.LeftSide>
                     <TextBlock Text="Orientación de campo" TextWrapping="Wrap" />
-                </supporters:TupleLayout.LeftSide>
-                <supporters:TupleLayout.RightSide>
+                </s:TupleLayout.LeftSide>
+                <s:TupleLayout.RightSide>
                     <ComboBox ItemsSource="{Binding Angles}" SelectedItem="{Binding SelectedAngle.DataValue}" />
-                </supporters:TupleLayout.RightSide>
-            </supporters:TupleLayout>
+                </s:TupleLayout.RightSide>
+            </s:TupleLayout>
         </StackPanel>
         <StackPanel Grid.Row="1" Visibility="Collapsed">
-            <UniformGrid Rows="1" supporters:Children.Margin="{StaticResource SmallHorizontalThickness}"
+            <UniformGrid Rows="1" s:Children.Margin="{StaticResource SmallHorizontalThickness}"
                          Margin="{StaticResource NormalVerticalThickness}">
                 <Button Content="Restablecer" Command="{Binding CancelEditCommand}"
                         Style="{StaticResource PinkButtonStyle}"

@@ -16,13 +16,13 @@
         private readonly IMessageBoxService messageBoxService;
         private readonly IOpenFileService openFileService;
         private RelayCommand addCommand;
-        private ObservableCollection<LomoConfigViewModel> configs;
         private RelayCommand deleteCommand;
         private RelayCommand discardCommand;
         private RelayCommand duplicateCommand;
         private RelayCommand exitCommand;
         private RelayCommand saveCommand;
         private LomoConfigViewModel selectedConfig;
+        private bool ignoreSelectionChanges;
 
         public ConfigWindowViewModel(ILomoConfigService lomoConfigService, IOpenFileService openFileService, IMessageBoxService messageBoxService)
         {
@@ -34,44 +34,32 @@
                     lomoConfigService.LomoConfigs.Select(config => ViewModelModelConverter.ConvertToViewModel(config, openFileService)));
         }
 
-        public ObservableCollection<LomoConfigViewModel> Configs
-        {
-            get { return configs; }
-            set
-            {
-                if (configs != null)
-                {
-                    foreach (var config in configs)
-                    {
-                        Unhook(config);
-                    }
-                }
-
-                configs = value;
-
-                if (configs != null)
-                {
-                    foreach (var config in configs)
-                    {
-                        Hook(config);
-                    }
-                }
-            }
-        }
+        public ObservableCollection<LomoConfigViewModel> Configs { get; set; }
 
         public LomoConfigViewModel SelectedConfig
         {
             get { return selectedConfig; }
             set
             {
+                if (selectedConfig != null)
+                {
+                    Unhook(selectedConfig);
+                }
+
                 selectedConfig = value;
+
+                if (selectedConfig != null)
+                {
+                    Hook(selectedConfig);
+                }
+
                 NotifyPropertyChanged("SelectedConfig");
             }
         }
 
         public RelayCommand AddCommand
         {
-            get { return addCommand ?? (addCommand = new RelayCommand(Add)); }
+            get { return addCommand ?? (addCommand = new RelayCommand(() => Add(), () => !IsDirty)); }
         }
 
         public RelayCommand DuplicateCommand
@@ -126,9 +114,7 @@
 
         private void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            NotifyPropertyChanged("IsDirty");
-            NotifyPropertyChanged("IsValid");
-            UpdateCommandsCanExecuteState();
+            UpdateState();
         }
 
         private void UpdateCommandsCanExecuteState()
@@ -179,7 +165,14 @@
             Hook(lomoConfigViewModel);
             Configs.Add(lomoConfigViewModel);
             SelectedConfig = lomoConfigViewModel;
+            UpdateState();
+        }
+
+        private void UpdateState()
+        {
             NotifyPropertyChanged("IsDirty");
+            NotifyPropertyChanged("IsValid");
+            NotifyPropertyChanged("IsCurrentConfigSesionEditingActive");
             UpdateCommandsCanExecuteState();
         }
 
@@ -227,13 +220,16 @@
 
         private void Duplicate()
         {
-            Configs.Add((LomoConfigViewModel) SelectedConfig.Clone());
+            Configs.Add((LomoConfigViewModel)SelectedConfig.Clone());
         }
 
         private void DiscardChanges()
         {
+            ignoreSelectionChanges = true;
             ResetChangesInSavedElements();
             DeleteUnsavedElements();
+            ignoreSelectionChanges = false;
+            UpdateState();
         }
 
         private void DeleteUnsavedElements()

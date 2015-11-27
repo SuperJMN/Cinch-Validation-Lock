@@ -57,12 +57,12 @@ namespace ComplexValidation.Configuration.ViewModel
             Name = new DataWrapper<string>(this, new PropertyChangedEventArgs("Name")) { DataValue = name };
             Name.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
-            Description = new DataWrapper<string>(this, new PropertyChangedEventArgs("Description")) { DataValue = "Descripción" };
+            Description = new DataWrapper<string>(this, new PropertyChangedEventArgs("Description")) { DataValue = string.Empty };
 
             ImagePath = new DataWrapper<string>(this, new PropertyChangedEventArgs("ImagePath"));
             ImagePath.AddRule(DataWrapperRules.NotNullOrEmtpyRule(Required));
 
-            BoxCount = new DataWrapper<int>(this, new PropertyChangedEventArgs("BoxCount")) { DataValue = 1 };
+            BoxCount = new DataWrapper<int?>(this, new PropertyChangedEventArgs("BoxCount")) { DataValue = 1 };
             BoxCount.AddRule(DataWrapperRules.NumberBetween(1, 100, InvalidBoxCount));
             SelectedCustomer = new DataWrapper<CustomerViewModel>(this, new PropertyChangedEventArgs("SelectedCustomer"));
             SelectedCustomer.AddRule(DataWrapperRules.CannotBeNull<CustomerViewModel>(CannotBeNull));
@@ -118,7 +118,7 @@ namespace ComplexValidation.Configuration.ViewModel
 
         public DataWrapper<string> ImagePath { get; set; }
 
-        public DataWrapper<int> BoxCount { get; set; }
+        public DataWrapper<int?> BoxCount { get; set; }
 
         public DataWrapper<CustomerViewModel> SelectedCustomer { get; set; }
 
@@ -127,7 +127,7 @@ namespace ComplexValidation.Configuration.ViewModel
             return new LomoConfigViewModel(this);
         }
 
-        private ObservableCollection<FieldViewModel> CloneFields(ObservableCollection<FieldViewModel> fields)
+        private ObservableCollection<FieldViewModel> CloneFields(IEnumerable<FieldViewModel> fields)
         {
             return new ObservableCollection<FieldViewModel>(fields);
         }
@@ -182,7 +182,7 @@ namespace ComplexValidation.Configuration.ViewModel
 
         public override bool IsDirty
         {
-            get { return base.IsDirty || Fields.Any(f => f.IsDirty || !f.Id.HasValue);  }
+            get { return !Id.HasValue || base.IsDirty || Fields.Any(f => f.IsDirty || !f.Id.HasValue);  }
         }
     }
 }

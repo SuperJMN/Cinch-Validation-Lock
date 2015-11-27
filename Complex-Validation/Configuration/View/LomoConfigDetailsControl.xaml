@@ -79,7 +79,7 @@
                             <TextBlock Text="Nº Cajas en el anillo" />
                             <TextBox Grid.Column="1" MaxWidth="120" MinWidth="80" HorizontalAlignment="Left"
                                      Margin="4,0,0,0"
-                                     Text="{Binding BoxCount.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                     Text="{Binding BoxCount.DataValue, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True, TargetNullValue=''}" />
                         </Grid>
                     </s:TupleLayout.RightSide>
                 </s:TupleLayout>

@@ -11,7 +11,7 @@ namespace ComplexValidation.Configuration.ViewModel.Supporters
 
         public static bool NumberBetween(object o, int min, int max)
         {
-            var dataValue = ((DataWrapper<int>)o).DataValue;
+            var dataValue = ((DataWrapper<int?>)o).DataValue;
             return dataValue >= min && dataValue <= max;
         }
 
