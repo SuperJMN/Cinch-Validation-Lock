@@ -9,14 +9,14 @@ namespace ComplexValidation.Tests
         [Fact]
         public void WithNameOnly_IsInvalid()
         {
-            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(SampleData.WithNameAndNoSelectedCustomer), null, null);
+            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(SampleData.WithNameAndNoSelectedCustomer), null, null, null);
             Assert.False(sut.IsValid);
         }
 
         [Fact]
         public void WithNameAndCustomer_IsValid()
         {
-            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(SampleData.UniqueConfigThatIsValid), null, null);
+            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(SampleData.UniqueConfigThatIsValid), null, null, null);
             Assert.True(sut.IsValid);
         }
 
@@ -69,7 +69,7 @@ namespace ComplexValidation.Tests
         [Fact]
         public void GivenUnsavedChanges_DiscardingChanges_ConfigsAreEmpty()
         {
-            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(SampleData.UnsavedUniqueConfigThatIsValid), null, null);
+            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(SampleData.UnsavedUniqueConfigThatIsValid), null, null, null);
 
             sut.DiscardCommand.Execute(null);
 
@@ -79,7 +79,7 @@ namespace ComplexValidation.Tests
         [Fact]
         public void AfterAddingNewInvalidConfig_SaveIsDisabled()
         {
-            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(), null, null);
+            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(), null, null, null);
             sut.AddCommand.Execute(null);
 
             Assert.False(sut.SaveCommand.CanExecute(null));
@@ -88,7 +88,7 @@ namespace ComplexValidation.Tests
         [Fact]
         public void AfterAddingValidConfig_SaveIsEnabled()
         {
-            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(), null, null);
+            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(), null, null, null);
             sut.AddCommand.Execute(null);
             var createdConfig = sut.Configs.First();
             FillWithValidData(createdConfig);
@@ -106,7 +106,7 @@ namespace ComplexValidation.Tests
 
         private static ConfigWindowViewModel ModifiedSut()
         {
-            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(SampleData.UniqueConfigThatIsValid), null, null);
+            var sut = new ConfigWindowViewModel(new LomoConfigServiceMock(SampleData.UniqueConfigThatIsValid), null, null, null);
             ModifySomething(sut);
             return sut;
         }

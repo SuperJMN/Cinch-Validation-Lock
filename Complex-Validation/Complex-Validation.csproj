@@ -94,14 +94,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration\Model\RealPersistence\CustomerRepository.cs" />
+    <Compile Include="Configuration\Model\InMemory\InMemoryCustomerRepository.cs" />
     <Compile Include="Configuration\Model\RealPersistence\ConfigRepository.cs" />
     <Compile Include="Configuration\Model\Customer.cs" />
     <Compile Include="Configuration\Model\Field.cs" />
     <Compile Include="Configuration\Model\IConfigRepository.cs" />
-    <Compile Include="Configuration\Model\RealPersistence\ICustomerRepository.cs" />
+    <Compile Include="Configuration\Model\ICustomerRepository.cs" />
     <Compile Include="Configuration\Model\RealPersistence\FieldRepository.cs" />
-    <Compile Include="Configuration\Model\RealPersistence\IFieldRepository.cs" />
-    <Compile Include="Configuration\Model\InMemoryLomoConfigService.cs" />
+    <Compile Include="Configuration\Model\IFieldRepository.cs" />
+    <Compile Include="Configuration\Model\InMemory\InMemoryLomoConfigService.cs" />
     <Compile Include="Configuration\Model\RealPersistence\RealLomoConfigService.cs" />
     <Compile Include="Configuration\ViewModel\CustomerViewModel.cs" />
     <Compile Include="Configuration\Model\FieldType.cs" />
@@ -129,7 +131,7 @@
     <Compile Include="Configuration\Model\SampleData.cs" />
     <Compile Include="Configuration\View\Supporters\NullToFalseConverter.cs" />
     <Compile Include="Configuration\View\Supporters\TupleLayout.cs" />
-    <Compile Include="LomoConfigServiceType.cs" />
+    <Compile Include="DataSourceType.cs" />
     <Page Include="Configuration\View\ConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

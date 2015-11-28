@@ -29,7 +29,7 @@ namespace ComplexValidation.Configuration.Model
             }
         }
 
-        private LomoConfig MapFromReader(IDataReader record)
+        private LomoConfig MapFromReader(IDataRecord record)
         {
             var entity = new LomoConfig
             {

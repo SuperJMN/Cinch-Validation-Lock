@@ -9,10 +9,12 @@
     using CinchExtended.ViewModels;
     using GalaSoft.MvvmLight.Command;
     using Model;
+    using Model.RealPersistence;
 
     public class ConfigWindowViewModel : EditableValidatingViewModelBase
     {
         private readonly ILomoConfigService lomoConfigService;
+        private readonly ICustomerRepository customerRepository;
         private readonly IMessageBoxService messageBoxService;
         private readonly IOpenFileService openFileService;
         private RelayCommand addCommand;
@@ -24,14 +26,15 @@
         private LomoConfigViewModel selectedConfig;
         private bool ignoreSelectionChanges;
 
-        public ConfigWindowViewModel(ILomoConfigService lomoConfigService, IOpenFileService openFileService, IMessageBoxService messageBoxService)
+        public ConfigWindowViewModel(ILomoConfigService lomoConfigService, ICustomerRepository customerRepository, IOpenFileService openFileService, IMessageBoxService messageBoxService)
         {
             this.lomoConfigService = lomoConfigService;
+            this.customerRepository = customerRepository;
             this.openFileService = openFileService;
             this.messageBoxService = messageBoxService;
             Configs =
                 new ObservableCollection<LomoConfigViewModel>(
-                    lomoConfigService.LomoConfigs.Select(config => ViewModelModelConverter.ConvertToViewModel(config, openFileService)));
+                    lomoConfigService.LomoConfigs.Select(config => ViewModelModelConverter.ConvertToViewModel(config, customerRepository, openFileService)));
         }
 
         public ObservableCollection<LomoConfigViewModel> Configs { get; set; }
@@ -161,7 +164,7 @@
 
         private void Add()
         {
-            var lomoConfigViewModel = new LomoConfigViewModel(GenerateNewName(), openFileService);
+            var lomoConfigViewModel = new LomoConfigViewModel(GenerateNewName(), openFileService, customerRepository);
             Hook(lomoConfigViewModel);
             Configs.Add(lomoConfigViewModel);
             SelectedConfig = lomoConfigViewModel;

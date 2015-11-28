@@ -13,12 +13,14 @@ namespace ComplexValidation.Configuration.ViewModel
     using GalaSoft.MvvmLight.Command;
     using Microsoft.Win32;
     using Model;
+    using Model.RealPersistence;
     using Supporters;
 
     public class LomoConfigViewModel : FullyFledgedViewModel, ICloneable
     {
         private readonly string name;
         private readonly IOpenFileService openFileService;
+        private readonly ICustomerRepository customerRepository;
         private RelayCommand addFieldCommand;
         private FieldViewModel selectedField;
         private ICommand chooseImageCommand;
@@ -35,21 +37,22 @@ namespace ComplexValidation.Configuration.ViewModel
             Fields = CloneFields(lomoConfigViewModel.Fields);
         }
 
-        public LomoConfigViewModel(string name, IOpenFileService openFileService)
+        public LomoConfigViewModel(string name, IOpenFileService openFileService, ICustomerRepository customerRepository)
         {
             this.name = name;
             this.openFileService = openFileService;
+            this.customerRepository = customerRepository;
 
             Fields = new ObservableCollection<FieldViewModel>();
             DisplayName = "la Configuración de Lomo";
-            
+
             SetupDataWrappers();
             SetupFixedData();
         }
 
         private void SetupFixedData()
         {
-            Customers = FixedData.Customers.Select(customer => new CustomerViewModel { Id = customer.Id, Name = customer.Name });
+            Customers = customerRepository.GetAll().Select(customer => new CustomerViewModel { Id = customer.Id, Name = customer.Name });
         }
 
         private void SetupDataWrappers()
@@ -182,7 +185,7 @@ namespace ComplexValidation.Configuration.ViewModel
 
         public override bool IsDirty
         {
-            get { return !Id.HasValue || base.IsDirty || Fields.Any(f => f.IsDirty || !f.Id.HasValue);  }
+            get { return !Id.HasValue || base.IsDirty || Fields.Any(f => f.IsDirty || !f.Id.HasValue); }
         }
     }
 }

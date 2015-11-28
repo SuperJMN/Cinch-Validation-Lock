@@ -1,6 +1,6 @@
 namespace ComplexValidation
 {
-    public enum LomoConfigServiceType
+    public enum DataSourceType
     {
         InMemory,
         Database,

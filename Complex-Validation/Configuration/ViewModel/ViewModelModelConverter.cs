@@ -3,12 +3,13 @@ namespace ComplexValidation.Configuration.ViewModel
     using System;
     using CinchExtended.Services.Interfaces;
     using Model;
+    using Model.RealPersistence;
 
     internal static class ViewModelModelConverter
     {
-        public static LomoConfigViewModel ConvertToViewModel(LomoConfig lomoConfig, IOpenFileService openFileService)
+        public static LomoConfigViewModel ConvertToViewModel(LomoConfig lomoConfig, ICustomerRepository customerRepository, IOpenFileService openFileService)
         {
-            var viewModel = new LomoConfigViewModel(lomoConfig.Name, openFileService)
+            var viewModel = new LomoConfigViewModel(lomoConfig.Name, openFileService, customerRepository)
             {
                 Id = lomoConfig.Id,
                 BoxCount = { DataValue = lomoConfig.BoxCount },

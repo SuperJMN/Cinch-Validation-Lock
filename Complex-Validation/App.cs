@@ -7,12 +7,13 @@
     using System.Windows;
     using CinchExtended.Services.Implementation;
     using Configuration.Model;
+    using Configuration.Model.InMemory;
     using Configuration.Model.RealPersistence;
+    using Configuration.View;
     using Configuration.ViewModel;
-    using ConfigWindow = Configuration.View.ConfigWindow;
 
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
     public partial class App
     {
@@ -20,21 +21,34 @@
         {
             base.OnStartup(e);
 
-            var lomoConfigService = CreateLomoConfigService(LomoConfigServiceType.Database);
-
-            var viewModel = new ConfigWindowViewModel(lomoConfigService, new WpfOpenFileService(), new WpfMessageBoxService());
-            var configWindow = new ConfigWindow { DataContext = viewModel };
+            var viewModel = CreateLomoConfigService(DataSourceType.Database);
+            var configWindow = new ConfigWindow {DataContext = viewModel};
             configWindow.Show();
         }
 
-        private ILomoConfigService CreateLomoConfigService(LomoConfigServiceType inMemory)
+        private ConfigWindowViewModel CreateLomoConfigService(DataSourceType inMemory)
         {
             switch (inMemory)
             {
-                case LomoConfigServiceType.InMemory:
-                    return new InMemoryLomoConfigService(SampleData.Configs);
-                case LomoConfigServiceType.Database:
-                    return new RealLomoConfigService(new ConfigRepository(CreateConnection("SIC")), null);
+                case DataSourceType.InMemory:
+                    return new ConfigWindowViewModel(
+                        new InMemoryLomoConfigService(SampleData.Configs),
+                        new InMemoryCustomerRepository(),
+                        new WpfOpenFileService(),
+                        new WpfMessageBoxService());
+
+                case DataSourceType.Database:
+
+                    var sicConnection = CreateConnection("SIC");
+                    var sgCadaConnection = CreateConnection("SGCADA");
+                    var realLomoConfigService = new RealLomoConfigService(new ConfigRepository(sicConnection), new CustomerRepository(sgCadaConnection));
+
+                    return new ConfigWindowViewModel(
+                        realLomoConfigService,
+                        new CustomerRepository(sgCadaConnection),
+                        new WpfOpenFileService(),
+                        new WpfMessageBoxService());
+
                 default:
                     throw new ArgumentOutOfRangeException("inMemory", inMemory, null);
             }
