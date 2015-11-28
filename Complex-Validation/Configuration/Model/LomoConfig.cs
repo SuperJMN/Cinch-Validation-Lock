@@ -11,6 +11,11 @@
         public int BoxCount { get; set; }
         public Customer Customer { get; set; }
         public IEnumerable<Field> Fields { get; set; }
+        public decimal Rotation { get; set; }
+        public decimal CropHeight { get; set; }
+        public decimal CropWidth { get; set; }
+        public decimal CropTop { get; set; }
+        public decimal CropLeft { get; set; }
 
         protected bool Equals(LomoConfig other)
         {

@@ -4,6 +4,7 @@ namespace ComplexValidation.Configuration.ViewModel
     using System.Collections.Generic;
     using System.ComponentModel;
     using CinchExtended.BusinessObjects;
+    using CinchExtended.Properties;
     using Model;
     using Properties;
     using Supporters;

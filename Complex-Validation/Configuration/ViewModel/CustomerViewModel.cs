@@ -3,11 +3,11 @@ namespace ComplexValidation.Configuration.ViewModel
     public class CustomerViewModel
     {
         public string Name { get; set; }
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         protected bool Equals(CustomerViewModel other)
         {
-            return Id == other.Id;
+            return string.Equals(Name, other.Name);
         }
 
         public override bool Equals(object obj)
@@ -29,7 +29,7 @@ namespace ComplexValidation.Configuration.ViewModel
 
         public override int GetHashCode()
         {
-            return Id;
+            return (Name != null ? Name.GetHashCode() : 0);
         }
     }
 }
