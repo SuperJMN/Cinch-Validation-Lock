@@ -1,5 +1,6 @@
 namespace ComplexValidation.Configuration.Model.RealPersistence
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
@@ -39,6 +40,47 @@ namespace ComplexValidation.Configuration.Model.RealPersistence
             field.FieldType = reader.GetFieldType("MZ_TIPO");
 
             return field;
+        }
+
+        public int Add(Field field)
+        {
+            var id = GetNextId();
+
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"INSERT INTO MAESTRO_ZONAS (MZ_COD, MZ_NOMBRE, MZ_DESC, MZ_TIPO) 
+                                        VALUES(:MZ_COD, :MZ_NOMBRE, :MZ_DESC, :MZ_TIPO)";
+                command.AddParameter("MZ_COD", id);
+                command.AddParameter("MZ_NOMBRE", field.Name);
+                command.AddParameter("MZ_DESC", field.Description);
+                command.AddParameter("MZ_TIPO", (decimal)field.FieldType);
+                command.ExecuteNonQuery();
+            }
+
+            return id;
+        }
+
+        private int GetNextId()
+        {
+            int id;
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT GENMAESTROZONAS.NEXTVAL FROM DUAL";
+                command.CommandType = CommandType.Text;
+                decimal seqVal = short.Parse(command.ExecuteScalar().ToString());
+
+                id = (int) seqVal;
+            }
+            return id;
+        }
+
+        public Field Get(int id)
+        {
+            using (var cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = string.Format(@"SELECT * FROM MAESTRO_ZONAS WHERE MZ_COD='{0}'", id);
+                return ExtractFieldFromReader(cmd.ExecuteReader()).ToList().Single();
+            }
         }
     }
 }

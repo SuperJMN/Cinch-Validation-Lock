@@ -40,13 +40,13 @@
 
                 case DataSourceType.Database:
 
-                    var sicConnection = CreateConnection("SIC");
-                    var sgCadaConnection = CreateConnection("SGCADA");
+                    var sicConnection = AppConfigConnectionFactory.CreateSicConnection();
+                    var sgCadaConnection = AppConfigConnectionFactory.CreateSgCadaConnection();
                     var realLomoConfigService = new RealLomoConfigService(new ConfigRepository(sicConnection), new CustomerRepository(sgCadaConnection));
 
                     return new ConfigWindowViewModel(
                         realLomoConfigService,
-                        new InMemoryDefaultFieldsForNewConfigsRepository(), 
+                        new DefaultFieldsForNewConfigsRepository(sicConnection), 
                         new CustomerRepository(sgCadaConnection),
                         new WpfOpenFileService(),
                         new WpfMessageBoxService());
@@ -54,18 +54,6 @@
                 default:
                     throw new ArgumentOutOfRangeException("inMemory", inMemory, null);
             }
-        }
-
-        private IDbConnection CreateConnection(string connectionStringToken)
-        {
-            var connStrSettings = ConfigurationManager.ConnectionStrings[connectionStringToken];
-
-            var factory = DbProviderFactories.GetFactory("Oracle.ManagedDataAccess.Client");
-
-            var dbConnection = factory.CreateConnection();
-            dbConnection.ConnectionString = connStrSettings.ConnectionString;
-            dbConnection.Open();
-            return dbConnection;
         }
     }
 }

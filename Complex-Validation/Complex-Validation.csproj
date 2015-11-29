@@ -94,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppConfigConnectionFactory.cs" />
     <Compile Include="Configuration\Model\IDefaultFieldsForNewConfigsRepository.cs" />
     <Compile Include="Configuration\Model\RealPersistence\DefaultFieldsForNewConfigsRepository.cs" />
     <Compile Include="Configuration\Model\InMemory\InMemoryDefaultFieldsForNewConfigsRepository.cs" />

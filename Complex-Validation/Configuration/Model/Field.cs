@@ -19,5 +19,32 @@ namespace ComplexValidation.Configuration.Model
         public decimal Top { get; set; }
         public decimal Width { get; set; }
         public decimal Height { get; set; }
+
+        protected bool Equals(Field other)
+        {
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+            return Equals((Field) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 }

@@ -15,7 +15,7 @@
     public class ConfigWindowViewModel : EditableValidatingViewModelBase
     {
         private readonly ILomoConfigService lomoConfigService;
-        private readonly InMemoryDefaultFieldsForNewConfigsRepository defaultFieldsRepository;
+        private readonly IDefaultFieldsForNewConfigsRepository defaultFieldsRepository;
         private readonly ICustomerRepository customerRepository;
         private readonly IMessageBoxService messageBoxService;
         private readonly IOpenFileService openFileService;
@@ -28,7 +28,7 @@
         private LomoConfigViewModel selectedConfig;
         private bool ignoreSelectionChanges;
 
-        public ConfigWindowViewModel(ILomoConfigService lomoConfigService, InMemoryDefaultFieldsForNewConfigsRepository defaultFieldsRepository, ICustomerRepository customerRepository, IOpenFileService openFileService, IMessageBoxService messageBoxService)
+        public ConfigWindowViewModel(ILomoConfigService lomoConfigService, IDefaultFieldsForNewConfigsRepository defaultFieldsRepository, ICustomerRepository customerRepository, IOpenFileService openFileService, IMessageBoxService messageBoxService)
         {
             this.lomoConfigService = lomoConfigService;
             this.defaultFieldsRepository = defaultFieldsRepository;
