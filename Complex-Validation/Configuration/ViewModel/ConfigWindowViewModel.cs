@@ -26,7 +26,6 @@
         private RelayCommand exitCommand;
         private RelayCommand saveCommand;
         private LomoConfigViewModel selectedConfig;
-        private bool ignoreSelectionChanges;
 
         public ConfigWindowViewModel(ILomoConfigService lomoConfigService, IDefaultFieldsForNewConfigsRepository defaultFieldsRepository, ICustomerRepository customerRepository, IOpenFileService openFileService, IMessageBoxService messageBoxService)
         {
@@ -234,10 +233,8 @@
 
         private void DiscardChanges()
         {
-            ignoreSelectionChanges = true;
             ResetChangesInSavedElements();
             DeleteUnsavedElements();
-            ignoreSelectionChanges = false;
             UpdateState();
         }
 
