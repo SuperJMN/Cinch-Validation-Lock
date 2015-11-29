@@ -1,40 +1,30 @@
 namespace ComplexValidation.Configuration.ViewModel
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using CinchExtended.Services.Interfaces;
     using Model;
     using Model.RealPersistence;
 
-    internal static class ViewModelModelConverter
+    internal static class ModelToViewModelConverter
     {
-        public static LomoConfigViewModel ConvertToViewModel(LomoConfig lomoConfig, ICustomerRepository customerRepository, IOpenFileService openFileService)
+        public static LomoConfigViewModel Convert(LomoConfig lomoConfig, ICustomerRepository customerRepository, IOpenFileService openFileService)
         {
             var viewModel = new LomoConfigViewModel(lomoConfig.Name, openFileService, customerRepository)
             {
                 Id = lomoConfig.Id,
                 BoxCount = { DataValue = lomoConfig.BoxCount },
-                SelectedCustomer = { DataValue = lomoConfig.Customer != null ? ConvertToViewModel(lomoConfig.Customer) : null },
+                SelectedCustomer = { DataValue = lomoConfig.Customer != null ? Convert(lomoConfig.Customer) : null },
                 Description = { DataValue = lomoConfig.Description },
                 ImagePath = { DataValue = lomoConfig.ImagePath },
-                Fields = ConvertToViewModel(lomoConfig.Fields),
+                Fields = new ObservableCollection<FieldViewModel>(lomoConfig.Fields.Select(Convert)),
             };
 
             return viewModel;
         }
 
-        private static ObservableCollection<FieldViewModel> ConvertToViewModel(IEnumerable<Field> fields)
-        {
-            var viewModels = new List<FieldViewModel>();
-            foreach (var field in fields)
-            {
-                viewModels.Add(ConvertToViewModel(field));
-            }
-            return new ObservableCollection<FieldViewModel>(viewModels);
-        }
-
-        private static FieldViewModel ConvertToViewModel(Field field)
+        public static FieldViewModel Convert(Field field)
         {
             var name = field.Name;
 
@@ -52,7 +42,7 @@ namespace ComplexValidation.Configuration.ViewModel
             return viewModel;
         }
 
-        private static CustomerViewModel ConvertToViewModel(Customer lomoConfigViewModel)
+        private static CustomerViewModel Convert(Customer lomoConfigViewModel)
         {
             if (lomoConfigViewModel == null)
             {

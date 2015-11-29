@@ -9,11 +9,13 @@
     using CinchExtended.ViewModels;
     using GalaSoft.MvvmLight.Command;
     using Model;
+    using Model.InMemory;
     using Model.RealPersistence;
 
     public class ConfigWindowViewModel : EditableValidatingViewModelBase
     {
         private readonly ILomoConfigService lomoConfigService;
+        private readonly InMemoryDefaultFieldsForNewConfigsRepository defaultFieldsRepository;
         private readonly ICustomerRepository customerRepository;
         private readonly IMessageBoxService messageBoxService;
         private readonly IOpenFileService openFileService;
@@ -26,15 +28,16 @@
         private LomoConfigViewModel selectedConfig;
         private bool ignoreSelectionChanges;
 
-        public ConfigWindowViewModel(ILomoConfigService lomoConfigService, ICustomerRepository customerRepository, IOpenFileService openFileService, IMessageBoxService messageBoxService)
+        public ConfigWindowViewModel(ILomoConfigService lomoConfigService, InMemoryDefaultFieldsForNewConfigsRepository defaultFieldsRepository, ICustomerRepository customerRepository, IOpenFileService openFileService, IMessageBoxService messageBoxService)
         {
             this.lomoConfigService = lomoConfigService;
+            this.defaultFieldsRepository = defaultFieldsRepository;
             this.customerRepository = customerRepository;
             this.openFileService = openFileService;
             this.messageBoxService = messageBoxService;
             Configs =
                 new ObservableCollection<LomoConfigViewModel>(
-                    lomoConfigService.LomoConfigs.Select(config => ViewModelModelConverter.ConvertToViewModel(config, customerRepository, openFileService)));
+                    lomoConfigService.LomoConfigs.Select(config => ModelToViewModelConverter.Convert(config, customerRepository, openFileService)));
         }
 
         public ObservableCollection<LomoConfigViewModel> Configs { get; set; }
@@ -62,7 +65,7 @@
 
         public RelayCommand AddCommand
         {
-            get { return addCommand ?? (addCommand = new RelayCommand(() => Add(), () => !IsDirty)); }
+            get { return addCommand ?? (addCommand = new RelayCommand(Add, () => !IsDirty)); }
         }
 
         public RelayCommand DuplicateCommand
@@ -152,19 +155,22 @@
 
         private void Update(LomoConfigViewModel lomoConfigViewModel)
         {
-            var lomoConfig = ModelConverter.ConvertToModel(lomoConfigViewModel);
+            var lomoConfig = ViewModelToModelConverter.Convert(lomoConfigViewModel);
             lomoConfigService.Update(lomoConfig);
         }
 
         private int SaveNew(LomoConfigViewModel lomoConfigViewModel)
         {
-            var lomoConfig = ModelConverter.ConvertToModel(lomoConfigViewModel);
+            var lomoConfig = ViewModelToModelConverter.Convert(lomoConfigViewModel);
             return lomoConfigService.Add(lomoConfig);
         }
 
         private void Add()
         {
-            var lomoConfigViewModel = new LomoConfigViewModel(GenerateNewName(), openFileService, customerRepository);
+            var lomoConfigViewModel = new LomoConfigViewModel(GenerateNewName(), openFileService, customerRepository)
+            {
+                Fields = new ObservableCollection<FieldViewModel>(defaultFieldsRepository.GetAll().Select(ModelToViewModelConverter.Convert))
+            };
             Hook(lomoConfigViewModel);
             Configs.Add(lomoConfigViewModel);
             SelectedConfig = lomoConfigViewModel;

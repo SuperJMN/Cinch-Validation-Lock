@@ -2,15 +2,15 @@ namespace ComplexValidation.Configuration.ViewModel
 {
     using Model;
 
-    internal static class ModelConverter
+    internal static class ViewModelToModelConverter
     {
-        public static LomoConfig ConvertToModel(LomoConfigViewModel lomoConfigViewModel)
+        public static LomoConfig Convert(LomoConfigViewModel lomoConfigViewModel)
         {
             var converted = new LomoConfig
             {
                 Id = lomoConfigViewModel.Id,
                 BoxCount = lomoConfigViewModel.BoxCount.DataValue.Value,
-                Customer = ConvertToModel(lomoConfigViewModel.SelectedCustomer.DataValue),
+                Customer = Convert(lomoConfigViewModel.SelectedCustomer.DataValue),
                 Description = lomoConfigViewModel.Description.DataValue,
                 ImagePath = lomoConfigViewModel.ImagePath.DataValue,
                 Name = lomoConfigViewModel.Name.DataValue
@@ -19,7 +19,7 @@ namespace ComplexValidation.Configuration.ViewModel
             return converted;
         }
 
-        private static Customer ConvertToModel(CustomerViewModel lomoConfigViewModel)
+        private static Customer Convert(CustomerViewModel lomoConfigViewModel)
         {
             return new Customer
             {

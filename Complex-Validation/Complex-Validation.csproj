@@ -94,6 +94,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Configuration\Model\IDefaultFieldsForNewConfigsRepository.cs" />
+    <Compile Include="Configuration\Model\RealPersistence\DefaultFieldsForNewConfigsRepository.cs" />
+    <Compile Include="Configuration\Model\InMemory\InMemoryDefaultFieldsForNewConfigsRepository.cs" />
     <Compile Include="Configuration\Model\RealPersistence\CustomerRepository.cs" />
     <Compile Include="Configuration\Model\InMemory\InMemoryCustomerRepository.cs" />
     <Compile Include="Configuration\Model\RealPersistence\ConfigRepository.cs" />
@@ -102,7 +105,6 @@
     <Compile Include="Configuration\Model\IConfigRepository.cs" />
     <Compile Include="Configuration\Model\ICustomerRepository.cs" />
     <Compile Include="Configuration\Model\RealPersistence\Extensions.cs" />
-    <Compile Include="Configuration\Model\RealPersistence\FieldRepository.cs" />
     <Compile Include="Configuration\Model\IFieldRepository.cs" />
     <Compile Include="Configuration\Model\InMemory\InMemoryLomoConfigService.cs" />
     <Compile Include="Configuration\Model\RealPersistence\RealLomoConfigService.cs" />
@@ -110,8 +112,8 @@
     <Compile Include="Configuration\Model\FieldType.cs" />
     <Compile Include="Configuration\ViewModel\FullyFledgedViewModel.cs" />
     <Compile Include="Configuration\Model\LomoConfig.cs" />
-    <Compile Include="Configuration\ViewModel\ModelConverter.cs" />
-    <Compile Include="Configuration\ViewModel\ViewModelModelConverter.cs" />
+    <Compile Include="Configuration\ViewModel\ViewModelToModelConverter.cs" />
+    <Compile Include="Configuration\ViewModel\ModelToViewModelConverter.cs" />
     <Compile Include="Configuration\View\LomoConfigControl.cs">
       <DependentUpon>LomoConfigControl.xaml</DependentUpon>
     </Compile>
