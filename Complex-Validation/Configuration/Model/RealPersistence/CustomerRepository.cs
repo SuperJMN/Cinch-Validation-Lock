@@ -3,6 +3,7 @@ namespace ComplexValidation.Configuration.Model.RealPersistence
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Linq;
 
     class CustomerRepository : ICustomerRepository
     {
@@ -16,7 +17,7 @@ namespace ComplexValidation.Configuration.Model.RealPersistence
 
         public Customer Get(int id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Customer> GetAll()
@@ -30,11 +31,11 @@ namespace ComplexValidation.Configuration.Model.RealPersistence
             {
                 command.CommandText = @"SELECT * FROM CLIENTES";
                 command.CommandType = CommandType.Text;
-                return ExtractFromReader(command.ExecuteReader());
+                return ExtractFromReader(command.ExecuteReader()).ToList();
             }
         }
 
-        private IEnumerable<Customer> ExtractFromReader(IDataReader reader)
+        private static IEnumerable<Customer> ExtractFromReader(IDataReader reader)
         {
             while (reader.Read())
             {
@@ -42,7 +43,7 @@ namespace ComplexValidation.Configuration.Model.RealPersistence
             }
         }
 
-        private Customer MapFromReader(IDataReader record)
+        private static Customer MapFromReader(IDataReader record)
         {
             var id = (int) (long)record["CLI_ID_CLIENTE"];
             var name = record.IsDBNull(record.GetOrdinal("CLI_NOMBRE")) ? null : (string)record["CLI_NOMBRE"];

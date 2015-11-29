@@ -1,8 +1,8 @@
 namespace ComplexValidation.Configuration.Model.RealPersistence
 {
-    using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Linq;
 
     class ConfigRepository : IConfigRepository
     {
@@ -18,7 +18,7 @@ namespace ComplexValidation.Configuration.Model.RealPersistence
             using (var cmd = connection.CreateCommand())
             {
                 cmd.CommandText = "SELECT * FROM TIPOSOCR";
-                return ExtractConfigFromReader(cmd.ExecuteReader());
+                return ExtractConfigFromReader(cmd.ExecuteReader()).ToList();
             }
         }
 
