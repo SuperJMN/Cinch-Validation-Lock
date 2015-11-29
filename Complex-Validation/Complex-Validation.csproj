@@ -101,6 +101,7 @@
     <Compile Include="Configuration\Model\Field.cs" />
     <Compile Include="Configuration\Model\IConfigRepository.cs" />
     <Compile Include="Configuration\Model\ICustomerRepository.cs" />
+    <Compile Include="Configuration\Model\RealPersistence\Extensions.cs" />
     <Compile Include="Configuration\Model\RealPersistence\FieldRepository.cs" />
     <Compile Include="Configuration\Model\IFieldRepository.cs" />
     <Compile Include="Configuration\Model\InMemory\InMemoryLomoConfigService.cs" />

@@ -30,12 +30,12 @@ namespace ComplexValidation.Configuration.ViewModel
         private const string InvalidBoxCount = "Número de cajas no válido";
         private const string CannotBeNull = "Requerido";
 
-        private LomoConfigViewModel(LomoConfigViewModel lomoConfigViewModel)
-        {
-            Name = new DataWrapper<string>(this, new PropertyChangedEventArgs("Name"));
-            Name.DataValue = string.Copy(lomoConfigViewModel.Name.DataValue);
-            Fields = CloneFields(lomoConfigViewModel.Fields);
-        }
+        //private LomoConfigViewModel(LomoConfigViewModel lomoConfigViewModel)
+        //{
+        //    Name = new DataWrapper<string>(this, new PropertyChangedEventArgs("Name"));
+        //    Name.DataValue = string.Copy(lomoConfigViewModel.Name.DataValue);
+        //    Fields = CloneFields(lomoConfigViewModel.Fields);
+        //}
 
         public LomoConfigViewModel(string name, IOpenFileService openFileService, ICustomerRepository customerRepository)
         {
@@ -43,16 +43,10 @@ namespace ComplexValidation.Configuration.ViewModel
             this.openFileService = openFileService;
             this.customerRepository = customerRepository;
 
-            Fields = new ObservableCollection<FieldViewModel>();
             DisplayName = "la Configuración de Lomo";
+            Customers = this.customerRepository.GetAll().Select(customer => new CustomerViewModel { Id = customer.Id, Name = customer.Name });
 
             SetupDataWrappers();
-            SetupFixedData();
-        }
-
-        private void SetupFixedData()
-        {
-            Customers = customerRepository.GetAll().Select(customer => new CustomerViewModel { Id = customer.Id, Name = customer.Name });
         }
 
         private void SetupDataWrappers()
@@ -127,7 +121,8 @@ namespace ComplexValidation.Configuration.ViewModel
 
         public object Clone()
         {
-            return new LomoConfigViewModel(this);
+            //return new LomoConfigViewModel(this);
+            throw new NotImplementedException();
         }
 
         private ObservableCollection<FieldViewModel> CloneFields(IEnumerable<FieldViewModel> fields)

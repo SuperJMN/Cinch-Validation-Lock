@@ -1,5 +1,6 @@
-namespace ComplexValidation.Configuration.Model
+namespace ComplexValidation.Configuration.Model.RealPersistence
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
 
@@ -31,30 +32,85 @@ namespace ComplexValidation.Configuration.Model
 
         private LomoConfig MapFromReader(IDataRecord record)
         {
+            var id = (int) (decimal) record["TOCRID"];
+
             var entity = new LomoConfig
             {
-                Id = (int) (decimal) record["TOCRID"],
-                Name = GetValue<string>(record, "TOCRDOCNOMBRE"),
-                Description = record.IsDBNull(record.GetOrdinal("TOCRDESC")) ? null : (string) record["TOCRDESC"],
-                ImagePath = record.IsDBNull(record.GetOrdinal("TOCREXFILE")) ? null : (string) record["TOCREXFILE"],
-                CropLeft = record.IsDBNull(record.GetOrdinal("TOCRORX")) ? 0 : (decimal) record["TOCRORX"],
-                CropTop = record.IsDBNull(record.GetOrdinal("TOCRORY")) ? 0 : (decimal) record["TOCRORY"],
-                CropWidth = record.IsDBNull(record.GetOrdinal("TOCRDX")) ? 0 : (decimal) (record["TOCRDX"] ?? 0),
-                CropHeight = record.IsDBNull(record.GetOrdinal("TOCRDY")) ? 0 : (decimal) (record["TOCRDY"] ?? 0),
-                Rotation = record.IsDBNull(record.GetOrdinal("TOCRROTACIONINICIAL")) ? 0 : (decimal) record["TOCRROTACIONINICIAL"],
-                BoxCount = (int) (record.IsDBNull(record.GetOrdinal("TOCRCAJAS")) ? 0 : (decimal) record["TOCRCAJAS"])
+                Id = id,
+                Name = record.GetValue<string>("TOCRDOCNOMBRE"),
+                Description = record.GetValue<string>("TOCRDESC"),
+                ImagePath = record.GetValue<string>("TOCREXFILE"),
+                CropLeft = record.GetValue<decimal>("TOCRORX"),
+                CropTop = record.GetValue<decimal>("TOCRORY"),
+                CropWidth = record.GetValue<decimal>("TOCRDX"),
+                CropHeight = record.GetValue<decimal>("TOCRDY"),
+                Rotation = record.GetValue<decimal>("TOCRROTACIONINICIAL"),
+                BoxCount = (int) record.GetValue<decimal>("TOCRCAJAS"),
+                Fields = GetFields(id),
             };
 
-            var customerName = record.IsDBNull(record.GetOrdinal("TOCRCLIENTE")) ? null : (string) record["TOCRCLIENTE"];
+            var customerName = record.GetValue<string>("TOCRCLIENTE");
             entity.Customer = customerName == null ? null : new Customer(customerName, null);
-            //entity.Customer = record.IsDBNull(record.GetOrdinal("TOCRCLIENTE")) ? null : (string)record["TOCRCLIENTE"];
 
             return entity;
         }
 
-        private static T GetValue<T>(IDataRecord record, string columnName)
+        private IEnumerable<Field> GetFields(int id)
         {
-            return record.IsDBNull(record.GetOrdinal(columnName)) ? default(T) : (T)record[columnName];
+            using (var cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = string.Format(@"SELECT * FROM ZONASOCR WHERE ZOCRTIPODOC = '{0}'", id);
+                return ExtractFieldsFromReader(cmd.ExecuteReader());
+            }
+        }
+
+        private IEnumerable<Field> ExtractFieldsFromReader(IDataReader reader)
+        {
+            while (reader.Read())
+            {
+                yield return MapFieldFromReader(reader);
+            }
+        }
+
+        private Field MapFieldFromReader(IDataRecord record)
+        {
+            var entity = new Field();
+            var id = (int)record.GetValue<decimal>("ZOCRID");
+            entity.Id = id;
+            entity.SpineCode = record.GetValue<decimal>("ZOCRTIPODOC");
+            entity.Name = record.GetValue<string>("ZOCRNOMBRE");
+            entity.Description = record.GetValue<string>("ZOCRDESCRIPCION");
+            entity.IsActive = ExtractBool((long)record["ZOCRACTIVO"]);
+            entity.IsRequired = ExtractBool((decimal)record["ZOCRREQUERIDO"]);
+            entity.FieldType = GetFieldType(record.GetValue<decimal>("ZOCRTIPOZONA"));
+            entity.Mask = record.GetValue<string>("ZOCRMASCARA");
+            entity.Min = (int)record.GetValue<decimal>("ZOCRMINVALUE");
+            entity.Min = (int)record.GetValue<decimal>("ZOCRMAXVALUE");
+            entity.FixedValue = record.GetValue<string>("ZOCRVALORFIJO");
+            entity.ValidChars = record.GetValue<string>("ZOCRFORBCHAR");
+            entity.Angle = (int)record.GetValue<decimal>("ZOCRROTACION");
+            entity.Left = record.GetValue<decimal>("ZOCRORIGENX");
+            entity.Top = record.GetValue<decimal>("ZOCRORIGENY");
+            entity.Width = record.GetValue<decimal>("ZDELTAX");
+            entity.Height = record.GetValue<decimal>("ZDELTAY");
+
+            return entity;
+        }
+
+        private bool ExtractBool(long record)
+        {
+            var v = record;
+            return v == 1;
+        }
+        private bool ExtractBool(decimal record)
+        {
+            var v = record;
+            return v == 1;
+        }
+
+        private FieldType GetFieldType(decimal fieldTypeId)
+        {
+            return (FieldType) (int) fieldTypeId;
         }
 
         public int Create(LomoConfig lomoConfig)
