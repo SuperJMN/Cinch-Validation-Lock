@@ -9,7 +9,7 @@
         [Fact]
         public void TestGetAll()
         {
-            var sut = new DefaultFieldsForNewConfigsRepository(AppConfigConnectionFactory.CreateSicConnection());
+            var sut = new DefaultFieldsRepository(AppConfigConnectionFactory.CreateSicConnection());
             var allFields = sut.GetAll();
             Assert.NotEmpty(allFields);
         }
@@ -21,9 +21,9 @@
 
             using (dbConnection.BeginTransaction())
             {
-                var sut = new DefaultFieldsForNewConfigsRepository(dbConnection);
+                var sut = new DefaultFieldsRepository(dbConnection);
                 var expected = new Field { Name = "MyField", Description = "Description"};
-                var id = sut.Add(expected);
+                var id = sut.Create(expected);
                 expected.Id = id;
                 var actual = sut.Get(id);
 

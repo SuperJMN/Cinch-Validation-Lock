@@ -1,15 +1,14 @@
 namespace ComplexValidation.Configuration.Model.RealPersistence
 {
-    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
 
-    public class DefaultFieldsForNewConfigsRepository : IDefaultFieldsForNewConfigsRepository
+    public class DefaultFieldsRepository : IDefaultFieldsForNewConfigsRepository
     {
         private readonly IDbConnection connection;
 
-        public DefaultFieldsForNewConfigsRepository(IDbConnection connection)
+        public DefaultFieldsRepository(IDbConnection connection)
         {
             this.connection = connection;
         }
@@ -42,7 +41,7 @@ namespace ComplexValidation.Configuration.Model.RealPersistence
             return field;
         }
 
-        public int Add(Field field)
+        public int Create(Field field)
         {
             var id = GetNextId();
 

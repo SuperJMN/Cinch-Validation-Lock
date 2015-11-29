@@ -5,5 +5,6 @@
     public interface IDefaultFieldsForNewConfigsRepository
     {
         IEnumerable<Field> GetAll();
+        int Create(Field field);
     }
 }

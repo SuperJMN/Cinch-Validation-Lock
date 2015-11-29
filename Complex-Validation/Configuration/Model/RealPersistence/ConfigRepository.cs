@@ -4,7 +4,7 @@ namespace ComplexValidation.Configuration.Model.RealPersistence
     using System.Data;
     using System.Linq;
 
-    class ConfigRepository : IConfigRepository
+    public class ConfigRepository : IConfigRepository
     {
         private readonly IDbConnection connection;
 
@@ -97,30 +97,103 @@ namespace ComplexValidation.Configuration.Model.RealPersistence
             return entity;
         }
 
-        private bool ExtractBool(long record)
+        private static bool ExtractBool(long record)
         {
             var v = record;
             return v == 1;
         }
-        private bool ExtractBool(decimal record)
+        private static bool ExtractBool(decimal record)
         {
             var v = record;
             return v == 1;
         }
 
-        private FieldType GetFieldType(decimal fieldTypeId)
+        private static FieldType GetFieldType(decimal fieldTypeId)
         {
             return (FieldType) (int) fieldTypeId;
         }
 
         public int Create(LomoConfig lomoConfig)
         {
-            throw new System.NotImplementedException();
+            using (var tr = connection.BeginTransaction())
+            {
+                var id = GetNextId();
+                
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = @"INSERT INTO TIPOSOCR (TOCRDOCNOMBRE, TOCRDESC, TOCREXFILE, TOCRCLIENTE, TOCRCAJAS) 
+                                        VALUES(:TOCRDOCNOMBRE, :TOCRDESC, :TOCREXFILE, :TOCRCLIENTE, :TOCRCAJAS)";
+
+                    command.AddParameter("TOCRDOCNOMBRE", lomoConfig.Name);
+                    command.AddParameter("TOCRDESC", lomoConfig.Description);
+                    command.AddParameter("TOCREXFILE", lomoConfig.ImagePath);
+                    command.AddParameter("TOCRCLIENTE", lomoConfig.Customer.Name);
+                    command.AddParameter("TOCRCAJAS", lomoConfig.BoxCount);
+                    command.ExecuteNonQuery();
+                }
+
+                foreach (var field in lomoConfig.Fields)
+                {
+                    CreateFieldsForConfig(connection, field, id+1);
+                }                
+
+                tr.Commit();
+                return id+1;
+            }
+        }
+
+        private void CreateFieldsForConfig(IDbConnection dbConnection, Field field, int id)
+        {
+            using (var command = dbConnection.CreateCommand())
+            {
+                command.CommandText = @"INSERT INTO ZONASOCR (ZOCRTIPODOC, ZOCRNOMBRE, ZOCRDESCRIPCION, ZOCRACTIVO, ZOCRREQUERIDO,ZOCRTIPOZONA,ZOCRMASCARA, ZOCRMINVALUE, ZOCRMAXVALUE, ZOCRVALORFIJO, ZOCRFORBCHAR,
+                                                                ZOCRROTACION, ZOCRORIGENX, ZOCRORIGENY, ZDELTAX, ZDELTAY) 
+                                        VALUES(:ZOCRTIPODOC, :ZOCRNOMBRE, :ZOCRDESCRIPCION, :ZOCRACTIVO, :ZOCRREQUERIDO, :ZOCRTIPOZONA, :ZOCRMASCARA, :ZOCRMINVALUE, :ZOCRMAXVALUE, :ZOCRVALORFIJO, :ZOCRFORBCHAR,
+                                                                :ZOCRROTACION, :ZOCRORIGENX, :ZOCRORIGENY, :ZDELTAX, :ZDELTAY)";
+                command.AddParameter("ZOCRTIPODOC", id);
+                command.AddParameter("ZOCRNOMBRE", field.Name);
+                command.AddParameter("ZOCRDESCRIPCION", field.Description);
+                command.AddParameter("ZOCRACTIVO", field.IsActive.ToDecimal());
+                command.AddParameter("ZOCRREQUERIDO", field.IsRequired.ToDecimal());
+                command.AddParameter("ZOCRTIPOZONA", (int)field.FieldType);
+                command.AddParameter("ZOCRMASCARA", field.Mask);
+                command.AddParameter("ZOCRMINVALUE", field.Min);
+                command.AddParameter("ZOCRMAXVALUE", field.Max);
+                command.AddParameter("ZOCRVALORFIJO", field.FixedValue);
+                command.AddParameter("ZOCRFORBCHAR", field.ValidChars);
+                command.AddParameter("ZOCRROTACION", field.Angle);
+                command.AddParameter("ZOCRORIGENX", field.Left);
+                command.AddParameter("ZOCRORIGENY", field.Top);
+                command.AddParameter("ZDELTAX", field.Width);
+                command.AddParameter("ZDELTAY", field.Height);
+                command.ExecuteNonQuery();
+            }
+        }
+
+
+        private int GetNextId()
+        {
+            int id;
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT GENTIPOSOCRID.NEXTVAL FROM DUAL";
+                command.CommandType = CommandType.Text;
+                decimal seqVal = short.Parse(command.ExecuteScalar().ToString());
+
+                id = (int)seqVal;
+            }
+            return id;
         }
 
         public LomoConfig Get(int id)
         {
-            throw new System.NotImplementedException();
+            using (var cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = string.Format("SELECT * FROM TIPOSOCR WHERE TOCRID={0}", id);
+                var executeReader = cmd.ExecuteReader();
+                var configs = ExtractConfigFromReader(executeReader);
+                return configs.Single();
+            }
         }
 
         public void Remove(int id)

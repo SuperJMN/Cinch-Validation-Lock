@@ -33,7 +33,7 @@
                 case DataSourceType.InMemory:
                     return new ConfigWindowViewModel(
                         new InMemoryLomoConfigService(SampleData.Configs),
-                        new InMemoryDefaultFieldsForNewConfigsRepository(),
+                        new InMemoryDefaultFieldsRepository(),
                         new InMemoryCustomerRepository(),
                         new WpfOpenFileService(),
                         new WpfMessageBoxService());
@@ -46,7 +46,7 @@
 
                     return new ConfigWindowViewModel(
                         realLomoConfigService,
-                        new DefaultFieldsForNewConfigsRepository(sicConnection), 
+                        new DefaultFieldsRepository(sicConnection), 
                         new CustomerRepository(sgCadaConnection),
                         new WpfOpenFileService(),
                         new WpfMessageBoxService());

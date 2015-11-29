@@ -107,6 +107,7 @@
     <Compile Include="ConfigWindowViewModelTests.cs" />
     <Compile Include="DefaultFieldsRepositoryTests.cs" />
     <Compile Include="InMemoryLomoConfigServiceTests.cs" />
+    <Compile Include="LomoConfigRepositoryTests.cs" />
     <Compile Include="LomoConfigServiceMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleData.cs" />
