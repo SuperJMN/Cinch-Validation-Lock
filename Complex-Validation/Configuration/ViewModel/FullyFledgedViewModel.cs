@@ -5,8 +5,7 @@ namespace ComplexValidation.Configuration.ViewModel
     using System.Linq;
     using System.Windows;
     using System.Windows.Input;
-    using CinchExtended.BusinessObjects;
-    using CinchExtended.ViewModels;
+    using Cinch;
     using GalaSoft.MvvmLight.Command;
 
     public class FullyFledgedViewModel : EditableValidatingViewModelBase

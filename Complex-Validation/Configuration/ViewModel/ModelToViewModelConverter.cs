@@ -3,7 +3,7 @@ namespace ComplexValidation.Configuration.ViewModel
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using CinchExtended.Services.Interfaces;
+    using Cinch;
     using Model;
     using Model.RealPersistence;
 

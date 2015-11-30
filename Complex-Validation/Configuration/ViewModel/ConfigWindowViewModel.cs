@@ -5,8 +5,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Windows;
-    using CinchExtended.Services.Interfaces;
-    using CinchExtended.ViewModels;
+    using Cinch;
     using GalaSoft.MvvmLight.Command;
     using Model;
     using Model.InMemory;

@@ -1,11 +1,8 @@
 ﻿namespace ComplexValidation
 {
     using System;
-    using System.Configuration;
-    using System.Data;
-    using System.Data.Common;
     using System.Windows;
-    using CinchExtended.Services.Implementation;
+    using Cinch;
     using Configuration.Model;
     using Configuration.Model.InMemory;
     using Configuration.Model.RealPersistence;
@@ -35,8 +32,8 @@
                         new InMemoryLomoConfigService(SampleData.Configs),
                         new InMemoryDefaultFieldsRepository(),
                         new InMemoryCustomerRepository(),
-                        new WpfOpenFileService(),
-                        new WpfMessageBoxService());
+                        new WPFOpenFileService(), 
+                        new WPFMessageBoxService());
 
                 case DataSourceType.Database:
 
@@ -48,8 +45,8 @@
                         realLomoConfigService,
                         new DefaultFieldsRepository(sicConnection), 
                         new CustomerRepository(sgCadaConnection),
-                        new WpfOpenFileService(),
-                        new WpfMessageBoxService());
+                        new WPFOpenFileService(),
+                        new WPFMessageBoxService());
 
                 default:
                     throw new ArgumentOutOfRangeException("inMemory", inMemory, null);

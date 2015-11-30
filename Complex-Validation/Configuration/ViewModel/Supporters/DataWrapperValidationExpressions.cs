@@ -1,6 +1,6 @@
 namespace ComplexValidation.Configuration.ViewModel.Supporters
 {
-    using CinchExtended.BusinessObjects;
+    using Cinch;
 
     internal static class DataWrapperValidationExpressions
     {

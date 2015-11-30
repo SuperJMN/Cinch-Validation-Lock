@@ -5,14 +5,9 @@ namespace ComplexValidation.Configuration.ViewModel
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
-    using System.Windows;
     using System.Windows.Input;
-    using CinchExtended.BusinessObjects;
-    using CinchExtended.Services.Interfaces;
-    using CinchExtended.ViewModels;
+    using Cinch;
     using GalaSoft.MvvmLight.Command;
-    using Microsoft.Win32;
-    using Model;
     using Model.RealPersistence;
     using Supporters;
 
