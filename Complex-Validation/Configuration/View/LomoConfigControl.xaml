@@ -65,7 +65,7 @@
             <s:NegateBoolConverter x:Key="NegateBoolConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Margin="10">
+    <Grid>
         <Grid.Resources>
             <Style x:Key="SeparatorBorderStyle" TargetType="Border">
                 <Setter Property="BorderBrush" Value="Gainsboro" />
@@ -73,7 +73,7 @@
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" MaxHeight="350" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -100,7 +100,7 @@
                         </UniformGrid>
                     </Grid>
                     <ListBox ItemsSource="{Binding Configs}" SelectedItem="{Binding SelectedConfig, Mode=TwoWay}"
-                             Style="{StaticResource ErrorHighlightingListBox}" />
+                             Style="{StaticResource ErrorHighlightingListBox}"  />
                 </DockPanel>
             </HeaderedContentControl>
         </ContentControl>
